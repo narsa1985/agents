@@ -1,0 +1,4668 @@
+**** Crew AI Tutorial: Setting Up a Debate Project with GPT-4o mini :
+
+And here we are in week three the crew folder.
+
+How exciting.
+
+Let's open it up to see what treasures I have in store for you.
+
+And it's completely empty.
+
+It won't be empty for you, but it's empty for me.
+
+Because this is starting from nothing.
+
+The way that some of you like me to do it.
+
+Which is, uh, gonna happen this time.
+
+Because that's the way that crew works.
+
+So we will begin then by opening up a command line like this, a terminal and crew, which you'll remember
+
+is control and the tick on a mac.
+
+That is really the control button on the bottom left.
+
+And, uh, then, uh, or it's the view menu and terminal if you're using menus.
+
+So then what I'm going to do is I'm going to first change directory to go into the third directory.
+
+Right now we are in crew and I'm going to create a new crew project, which I do by saying crew I create
+
+crew.
+
+And then the name of the project.
+
+And we are going to call this project debate For reasons that will become obvious, but probably already
+
+are, and it first asks us a question, and to read the question, I'll have to make this a bit larger.
+
+Um, and this is because when you first create a project, it puts in place, as I mentioned, some
+
+scaffolding, some sort of basic project framework.
+
+And in order to set that up, it wants to know which model would you like me to start with.
+
+So we're not necessarily fixing this, but we can start by saying open AI and we can always change it
+
+later.
+
+Select a model to use and we can choose GPT four or mini to keep it nice and cheap.
+
+And then enter your key.
+
+Now at this point we should definitely just press enter because we already have a dot env file.
+
+It's trying to build env files for us.
+
+We don't need that.
+
+We press enter and you'll see right here that it's created a bunch of files.
+
+And I'm going to remove the terminal for a second so that we can take a look at it, because they have
+
+appeared over on the left.
+
+Now one thing to get in mind is that when when you're looking at the explorer in cursor or in VSCode,
+
+if there's a directory like crew that only has one other directory called debate, then it shows like
+
+this.
+
+It doesn't bother showing multiple files, multiple folders under it.
+
+And that can be a little bit confusing.
+
+So we might go back into the terminal and just make a new directory.
+
+Let's let's make a directory and call it other.
+
+And when I do that you see what just happened.
+
+Now if we come in here, you'll see that there's both debate and there's an empty folder called other,
+
+which is going to make it a little bit easier on the eyes.
+
+Okay.
+
+So now let's have a quick look at what has crew created for us.
+
+So under debate, which is the name of our crew that we're about to make a debate crew, as you've probably
+
+guessed, there is a folder called knowledge and that has a file user preference, and that has some
+
+stuff about the person who's the the user.
+
+And you can change this.
+
+This would be background information that would be given to the model if we made it use of it, which
+
+we will not.
+
+So this is a sort of an example of some of the scaffolding that's created in case we need to use it.
+
+Then there is a folder called debate.
+
+Sorry.
+
+There's a folder called source.
+
+And under that folder there is a folder called debate.
+
+And again you're seeing it in this way in the explorer because there are no other folders other than
+
+debate under source.
+
+So sorry to recap.
+
+Under crew we have a folder called debate, which is the name of of the project that has a sub folder
+
+subdirectory source SLC and that has a subdirectory also with the project's name debate.
+
+And that is where we are right now.
+
+And this is the this is the most important directory of them all.
+
+This this directory named the project underneath source.
+
+And that has a few things in it.
+
+It has a config directory.
+
+The config directory has two YAML files agents and tasks.
+
+And here they are.
+
+And they're set up with some default example code in there that we will come back and look at in just
+
+a second.
+
+There is a tools folder that has just, again, some scaffolding, some some, some basic stuff here
+
+that we might want to fill in later that we won't do this time.
+
+And then if we come into the root folder of debate, you'll see that there is a file, a module called
+
+crew dot Pi which has a bunch of scaffolding again, and then a main dot pi.
+
+So there we have it crew, the module, which is actually the one which brings together our crew, and
+
+it has the decorators that I mentioned to you, main.
+
+And then the two YAML files under config that has all been set up for us, ready for us to build our
+
+first crew.
+
+All right.
+
+So we are now going to go and define our YAML, our configuration for our agents and our tasks, starting
+
+over here with the agents YAML file.
+
+And this contains some default some sort of scaffolding.
+
+Some example agents that are called the researcher and the reporting analyst are the two examples that's
+
+given.
+
+And we're going to change these to being what we're looking to build.
+
+And of course, we're looking to build a debate team.
+
+And in fact, we only need two agents for what we're looking to do.
+
+We want an agent that will be the debater.
+
+Our one agent is going to play both roles of being for and against the the motion.
+
+And then we will have a judge and those will be our two agents.
+
+And now we need to describe what they are.
+
+And so the, the role is the first thing that we say here.
+
+And we're going to say a compelling debater right there okay.
+
+And now the goal is what what it's it's looking to achieve the objectives.
+
+And so let's see I'm going to actually copy across one that I did earlier.
+
+So you don't have to watch me typing everything.
+
+But we're going to present a clear argument either in favor of or against the motion.
+
+And the motion is and this is important, this little thing in in curly braces.
+
+Here is where you can effectively make this a template.
+
+That is something that's going to get defined when you run this agent framework.
+
+When we end up saying, Q I run, we are going to specify what we want motion to be, and we're actually
+
+going to specify that in Main.py.
+
+So keep that in mind.
+
+In Main.py we're going to have to set what is motion, the motion of the debate.
+
+The thing that we're putting forward the proposal that they will debate.
+
+Okay.
+
+And so now we have a back story, which is where we set the the it's really we know that this is the
+
+system prompt or a big part of it.
+
+But in crew land, we want to think of this as the, as the sort of framing of this, of this agent,
+
+the back story.
+
+You're an experienced debater with a knack for giving concise but convincing arguments.
+
+The motion is so on.
+
+So that is the definition of our agent, our debater agent.
+
+And that will apply both for one that is presenting for an argument and against it.
+
+And of course we'll be using tasks to distinguish between them.
+
+But now let's define our judge.
+
+So we are going to give the judge a role.
+
+And the role we will say is decide the winner of the debate.
+
+Look at how cursor even suggests what this should be.
+
+Let's say based on the arguments presented, let's keep it short.
+
+And then the goal I will take one that I wrote earlier because it's a couple of sentences.
+
+You can see that that amazingly cursor comes up with natural language.
+
+It's just great for these things already.
+
+So you can even define your agents just by letting cursor describe them.
+
+And the backstory here I'm going to copy and paste in a nice juicy backstory, and here it is.
+
+You're a fair judge with a reputation for weighing up arguments without factoring in your own views
+
+and making a decision based purely on the merits of the argument.
+
+The motion is blah.
+
+So that's the sort of good way to set things like the backstory.
+
+And again, on the one hand, one way of thinking about this is that this is the kind of backstory that
+
+an LLM is going to take into account in setting the context for this role.
+
+The other, more scientific way is just to always keep in mind that what Llms are doing is predicting
+
+the most likely next token to follow an input.
+
+And the point is that if this backstory is part of the input, then you are increasing the probability
+
+that the output tokens will be consistent with this, because things that are seen at training time
+
+that have that kind of backstory often predict tokens consistent with that backstory.
+
+So that's the the more scientific way of thinking about why this tends to work really well.
+
+All right.
+
+And then the final thing I'm going to add in here is you can also specify what model to use.
+
+And you can actually you can just have GPT four or mini.
+
+Or if you want to really spell it out then you say OpenAI GPT four mini, but it assumes OpenAI by default
+
+for that model.
+
+What am I doing here?
+
+Model colon.
+
+There we go.
+
+Luckily, cursor to the rescue.
+
+And this then is our YAML definition of the agents.
+
+Next up is tasks.
+
+*** How to Create an AI Debate System Using Crew AI and Multiple LLMs :
+
+And now we move on to tasks.
+
+And here you'll see that there is a research task and a reporting task.
+
+By default.
+
+But we're going to change this and we're going to have a few different tasks.
+
+We're going to have a task called propose.
+
+This is of course going to be the task which is about proposing a motion.
+
+And so the description what is this task.
+
+It's going to be your proposing the motion and then the motion that gets passed in when we do that part.
+
+Come up with a clear argument in favor of the motion.
+
+Be very convincing.
+
+Then we're going to have an expected output, which is going to be quite simple.
+
+The expected output is going to be your clear argument in favor of the motion in a concise manner.
+
+The agent.
+
+So this is where you associate a task with an agent.
+
+And obviously this is going to be associated with the debater agent.
+
+And then there's one other thing we can do here which is an output file.
+
+We want to put this in a subdirectory output and we will call it propose.md.
+
+And so there you have our proposal task.
+
+So now we're going to have another task which I'm going to copy and paste.
+
+And this one is going to be oppose.
+
+This is the debater that's saying no description.
+
+Instead of proposing you are in opposition to the motion, come up with a clear argument against the
+
+motion.
+
+Looks like Kostas can help there.
+
+It does help.
+
+Be very convincing.
+
+Your clear argument against the motion.
+
+And that should be oppose.
+
+It's amazing, isn't it?
+
+So cursive does all the work for us.
+
+And now we have our final task, which is going to be called decide.
+
+And uh, the as a little tip here, something which is worth knowing is that you cannot call your tasks
+
+the same thing as you call your agents, or you will have a problem with conflicting names.
+
+So sometimes it's better to call this like proposed task, opposed task.
+
+But I've kept it short.
+
+But we couldn't, for example, call this task judge.
+
+Otherwise that would conflict with the agent that we called judge.
+
+All right.
+
+So description we will say review.
+
+Let me see.
+
+Now review the arguments.
+
+Here we go.
+
+Review the arguments presented by the debaters and decide which side is more convincing.
+
+And we'll just change this to delete all of this.
+
+We don't need any of that.
+
+We just need to say the expected output is your decision on which side is more convincing.
+
+And let's say and why.
+
+All right.
+
+And then the this should go please to a folder outputs and decide folder output.
+
+All right.
+
+That seems good.
+
+So there are our tasks.
+
+Okay.
+
+So the final step really is is the final steps is setting up pi and Main.py.
+
+And then we'll be ready to go.
+
+So this is the default module crew dot pi.
+
+And you can see it's got some stuff in here based on the standard scaffolding.
+
+It has created a class.
+
+And it's got this crew base decorator around it.
+
+And this class is named the same as the name of our project debate.
+
+So it's set that for us and it called it Debate Crew, which is exactly right.
+
+Now one of the things I dislike a bit is that it does generate all of this scaffolding code, all this
+
+standard code with lots of comments, and you can read some of the comments and follow the links.
+
+And it's got stuff like there's, there's ways that you can add in functions that get called at the
+
+beginning and end and stuff like that.
+
+But I do find that these comments are get in the way a bit, and I usually start by coming through and
+
+deleting everything in these just to keep it nice and clean.
+
+But what you'll see that it's done that is nice is that it brings in the agent's config and the tasks
+
+config.
+
+It just brings them in from the config folder right here.
+
+So those are set as variables for this class.
+
+And you can see how it refers directly to our configuration.
+
+And of course, that means that if you had different configuration files, then you could bring them
+
+in just like that.
+
+Then this is stuff about how you can bring in your own tools.
+
+And then this is where we set up our agents.
+
+So obviously we don't have an agent called researcher.
+
+We have an agent called debater.
+
+And the agent decorator is telling crew that this is an agent.
+
+It's going to return an agent, the config.
+
+We're going to want to change that to debater and we'll leave it verbose.
+
+True.
+
+Which means that we'll get a nice sort of print as it's running with what's going on.
+
+And then we'll have another agent and remember the name of this guy.
+
+Well, even if you don't, luckily cursor does and it's filled it in in both places.
+
+There we go.
+
+The judge is our other agent.
+
+All right.
+
+And now I'm getting rid of the comments about tasks.
+
+But it tells you about how you can do things like track outputs and dependencies and the like.
+
+But we're going to go on and define our, our tasks.
+
+They have a again the decorator task.
+
+And now we're going to have a task called propose.
+
+And there we go.
+
+Cursor fills it in.
+
+Now it has an output file listed there.
+
+But we don't need that because it's already specified in our config file.
+
+So that's not actually needed.
+
+And you know now that I look at this I do I have to say I think this would be cleaner if we have this
+
+all on one line like this, we don't need to be on multiple lines.
+
+And now you can see how very simple this whole function is going to look.
+
+And look cursor is going to do it for us.
+
+And then we can just delete that.
+
+Sorry I'm tidying this all up when you see how much better it is when this is in JupyterLab.
+
+And you don't have to watch me doing all this.
+
+So don't hate me.
+
+I'll be quick, but I think it's nicer if we have it looking nice and sharp like that.
+
+You see how nice and simple and clean this is?
+
+And that's the benefit of using the the config that we don't need to, to have too much here.
+
+And then the other task is oppose.
+
+And obviously it brings in the config for oppose.
+
+And then the final one is decide.
+
+And there we go.
+
+Thank you cursor for filling that in for us.
+
+So those are our two agents and three tasks.
+
+And we are down to the final section here.
+
+Okay.
+
+So now we now create this the crew.
+
+And this is, this is in the the function crew.
+
+And it has the decorator crew.
+
+And I'm going to take out the, the piece there which we will be coming to later.
+
+So we just simply have to create an instance of crew.
+
+We populate the agents with agents and as cry helpfully tells us, this is automatically created by
+
+the agent decorator.
+
+We populate it with the tasks that are similarly created.
+
+This is where we choose to be sequential rather than hierarchical in our process, and that we want
+
+to be verbose.
+
+And then there's some stuff about being hierarchical if you want to.
+
+And uh, look, if you want to use that nice little comment from the crew team in there.
+
+Okay.
+
+that's it for our crew object.
+
+We're almost finished.
+
+That was our crew module.
+
+We're now going to the main module where we finish things off.
+
+So this this is the again there's all of this stuff that you can read.
+
+This main file is intended to run your crew locally.
+
+So refrain from adding unnecessary logic.
+
+Gotcha.
+
+So inputs when we're running the crew, this is where we choose those template values that we put in
+
+our YAML file.
+
+This is where we choose what we want them to be.
+
+And so what we want them to be here is we want to have a motion and we want to give ourselves a nice
+
+motion.
+
+We don't we don't have this.
+
+We only have the one field motion.
+
+And what motion?
+
+What do we think that we would like them to debate?
+
+Let's have the motion is there should be a that was that was where I was heading with this uh, cursor.
+
+I must be super predictable, but it does seem like a good one to have our eyes A's debate.
+
+Let's not say there should be.
+
+Let's say there needs to be strict laws to regulate llms.
+
+There we go.
+
+That's a nice meaty topic for them to debate.
+
+And then we've got our stuff down here.
+
+We will come back to this stuff.
+
+We don't care about any of that.
+
+That is all it should take.
+
+We should now be ready to run our first crew just based on that.
+
+Actually, just before we run, let me make another little change that in this main module.
+
+I'm just going to make sure we print the result to the screen just to be satisfying.
+
+It will be saved to a file as well.
+
+Results equals debate.
+
+And then we will print result dot raw.
+
+That will print the raw output from the final task sent to the final agent.
+
+And then maybe one other little change I'll make is I realize we're right now sending both the debater
+
+and the judge to be OpenAI, but it would be more interesting to switch this one up.
+
+Let's let's flip it.
+
+As cursor suggests.
+
+Let's use Claude 37 sonnet latest.
+
+The latest Claude 3.7 model so that we have anthropic judging OpenAI's debates.
+
+And this also means that we'll be using anthropic this time, which was harder for us last time.
+
+Okay, so with that now I think we should be ready.
+
+We can bring up a terminal.
+
+Here it is.
+
+We will want to change into the directory for crew and then the directory for debate.
+
+And now we simply type crew.
+
+I run to kick off the run.
+
+And the first time you do this, it's going to do some UV stuff to build the environment.
+
+But I've already done it, so it's running right away.
+
+You can see it's executing tasks.
+
+The debater, each of the agents is running it's debate right now.
+
+It's the the debater for the proposer has already said the against is now debating.
+
+And now we're deciding on the winner of the debate based on the arguments.
+
+It is anthropic.
+
+That is thinking.
+
+And with any luck, we will soon see whether anthropic decides for or against the motion.
+
+Here we go.
+
+Let me see.
+
+In evaluating, I found the arguments in favor of the motion to be more convincing.
+
+So the view is that there should be strict laws to regulate large language models, such as the very
+
+one that is making the judgment here.
+
+Okay.
+
+So that ran.
+
+And look, that's quite a wordy response that came from anthropic.
+
+There you get to see in here the trace of the thinking that happened.
+
+And you'll see that an output directory has been created.
+
+And if we open this up and if I close this terminal so it's not in the way we can go into the output,
+
+and you'll see that there is weighty argument in favor of LM law regulation that you can read about
+
+about the ethical, safety and social challenges necessitating strict regulatory frameworks.
+
+And then the opposing thinking as well.
+
+It's no doubt going to be about hindering creativity.
+
+Yes.
+
+Very good.
+
+And I'm sure there's some compelling arguments there, too.
+
+And then the decision is the thing that we already saw printed a moment ago that came from anthropic.
+
+And so that is our first experiment into the world of crew.
+
+We set up our yamls.
+
+We set up our overall our our module for crew, the crew module.
+
+And then the main.py was where we set the motion, which was the thing that was templated in the various
+
+YAML documents.
+
+And we actually ran our debates with debates, crew kickoff passing in the inputs, this dictionary
+
+of the templated keys with their values.
+
+So I hope you enjoyed our first foray into crew AI, and I very much encourage you to do the same thing.
+
+Well, of course you will actually see this debates project in there, but you can go and make a second
+
+one.
+
+Or just run this by typing query run and get a handle.
+
+Get a good sense for how crew AI works.
+
+** Building AI Debate Systems with CrewAI: Compare Different LLMs :
+
+And so to recap, we just experienced a crew I project, which is in fact a UV project under the hood.
+
+We created it by saying crew I create crew debate.
+
+It created this directory structure which now should land with you.
+
+You should be more familiar debate census, then debate again, then config.
+
+We set up our agents YAML to define each of the agents, including the model.
+
+We set up the tasks that included the expected output and the output file.
+
+Crew is where we had the various decorators, and we brought it all together with our functions for
+
+agents, tasks and the crew.
+
+And we said that the process was sequential.
+
+And then we typed query run within our directory and it kicked the whole thing off, generated the output.
+
+And it was successful.
+
+And apparently there should be stricter regulation around llms.
+
+I encourage you to try debating some more controversial points of your liking and choose different models.
+
+So yes, we'll of course be getting much deeper into crew.
+
+But in the meantime, the assignment for you is to now play around with this.
+
+You could have a separate agent for the the agent that is proposing and opposing the motion.
+
+Break that into two different agents and have the tasks going to them separately.
+
+And the reason to do that is that then it's easy to have a different model.
+
+So that you could have OpenAI debate with deep seek or something like that, and then switch who's opposing
+
+and who's proposing to see whether it changes the outcome.
+
+And that's an amusing and entertaining way to battle Llms together, to see which are better at forming
+
+coherent arguments, persuasive arguments that convince a different model that is being the judge.
+
+So that allows you to come up with your own little leaderboard based on debating skills.
+
+So please go away and enjoy yourself with that.
+
+Get a good handle, get comfortable with the framework around crew and the sort of minimal scaffolding
+
+there.
+
+And next time we'll get a little bit deeper into crew and start building some more crew projects.
+
+I will see you then.
+
+
+
+****  Building Crew AI Projects: Tools, Context & Google Search Integration :
+
+And a very warm welcome to day two of week three.
+
+Our second day playing with crew, this time continuing doing some building and exploring the crew framework.
+
+To quickly recap what we did last time we learned about an agent.
+
+The agent being the smallest autonomous unit.
+
+It has an LM associated with it.
+
+It doesn't actually need to.
+
+You can have an agent with that LM, but they typically do.
+
+It has a role, a goal, a backstory.
+
+And it also has memory and tools.
+
+Not that we've looked at either of them just yet.
+
+And then a task.
+
+This is the concept which doesn't have an analog.
+
+In OpenAI agent SDK.
+
+A task is an assignment to be carried out with a description, expected output, perhaps an output file,
+
+and it's assigned to an agent.
+
+And then a crew, which is a team of agents and tasks together assigned to those agents.
+
+And they can run sequentially or hierarchically, in which case you'd have to assign a manager LM to
+
+figure out which task is assigned to which agent.
+
+So that's the overall structure of crew, which now should be pretty familiar to you.
+
+And you'll remember that there are five steps that we went through when we set up our first crew project.
+
+First of all, we created a project.
+
+We did create Create Crew, my project, or we did debate, but it could be whatever we want and it
+
+will set up that whole file system structure for us.
+
+We then go into source and the name of the project and then config, and that is where we find the YAML
+
+files, which we can call them whatever we want.
+
+But by by by default there are two there one for the agents, one for the tasks, and we fill them in
+
+with the details.
+
+We then go to the crew.py module in our source project folder, and we create the agents, the tasks
+
+and the crew using the functions that are already set up there for us and using the decorators.
+
+And we reference the YAML config, although we don't need to, we could actually manually create a pass
+
+in those fields when we create each of those objects.
+
+But the config file makes that easy for us and keeps some of this prompting text separate from our code,
+
+which is a nice separation.
+
+Then fourth, we update the Main.py module to set the config to set up the run parameters that we did
+
+when we specify the inputs.
+
+The fact in our case that the topic of debate the motion was, as it happens, about AI regulation,
+
+and then we can run and the way we run is we type crew.
+
+I run from within the project folder, which behind the scenes does a run, and then it's off to the
+
+races with our crew framework.
+
+Okay.
+
+So we're going to go a little bit deeper in two ways.
+
+And we're going to set up another project today.
+
+And one of those ways is with tools, something that we're very familiar with already equipping agents
+
+with capabilities.
+
+We will see how to do that crew AI style And then the other one is about context.
+
+And this is how you tell crew what information is to be passed from one task to another.
+
+So these are the two extra details we're going to get into today when we build our second crew.
+
+And let's go and do that right now.
+
+So just before we go into crew, there's another of these APIs that I need you to sign up for, but
+
+you'll be pleased to hear it's another free one.
+
+And this is going to be quite a contrast with our experience with OpenAI agents SDK.
+
+We're going to use something called Serpa, which is a fast way to run Google queries from code.
+
+It's an API to run lightning fast Google search at an unbeatable price, and indeed it is unbeatable.
+
+So you go to Serpa Dev and you sign up by pressing that button there, and I've already done so and
+
+so I can sign in with my account.
+
+And here I am.
+
+And the thing is that you get 2500 free credits, which is more than enough for this course, and this
+
+will allow us to do plenty of searches quite happily indeed.
+
+And you will go to API key, which I won't do.
+
+Now you'll get my API key, but you go there to create your API key and as usual, copy it into your
+
+clipboard because that is something that you will need for your env file.
+
+And in your env file, you should have entered that in as Serpa underscore API underscore key cursor
+
+will actually prompt you for that if you start typing it.
+
+Serpa API key.
+
+And if you're interested Serp where that comes from.
+
+Serp stands for Search Engine results page, which is the common name for these kinds of services.
+
+And there is another one that's called something similar to Serpa.
+
+So be sure that you use Serpa API key.
+
+Not I think this one called Serp API or something, which is different.
+
+So be sure to have the right key there.
+
+Okay, so with that we are we are still in the debate folder.
+
+We will close that.
+
+Here we are in our crew folder in cursor for week three, and we are going to go into bringing up a
+
+new terminal.
+
+It's still got what we had before.
+
+Let's let's clear this let's exit that.
+
+Let's start a fresh terminal.
+
+Here it is.
+
+We're going to go into the third folder crew.
+
+And it's time for us again to create a new project.
+
+Do you remember how to create a crew project?
+
+Well here you do it.
+
+It's crew.
+
+I create crew again, as opposed to a flow, which is different.
+
+And then we're going to make one that's called financial researcher, somewhat inspired by the default
+
+one that's already there.
+
+Let's have a financial researcher.
+
+Let's create that right now.
+
+So we as before, we just choose OpenAI and GPT four or many.
+
+And we skip setting up the key.
+
+And it has created the financial Researcher project and a bunch of scaffolding for us, which is great.
+
+And this is where we will get started.
+
+
+**Building Multi-Agent Financial Research Systems with Crew.ai :
+
+
+
+Okay, so let's close the terminal.
+
+Come into financial researcher.
+
+You know the deal.
+
+Now there is a source folder.
+
+It has a config.
+
+And that is where we want to begin.
+
+We want to begin by looking at our agents.
+
+So this is the agents.
+
+And we are in fact also we're going to have a researcher agent.
+
+And we're going to make this a bit shorter and just have an analyst agent, a researcher agent and an
+
+analyst agent.
+
+So what are they going to do?
+
+So this time I'm going to to simply copy and paste a whole new section here and talk it through with
+
+you.
+
+So the role is going to be a senior financial researcher for a company that we will specify in the inputs
+
+like before, it's going to research that company news and potential for that company.
+
+The backstory.
+
+You're a seasoned financial researcher with a talent for finding the most relevant information about
+
+a company known for your ability to find the most relevant information, present it in a clear and concise
+
+manner.
+
+And that's where we specify the LLM, which we can we can mix this up if we wish.
+
+And we now choose to have our second second agent, the analyst.
+
+Let me put in what I've got here.
+
+Market analyst and report writer focused on a company.
+
+You analyze the company and you create a comprehensive, well structured report that represents insights
+
+in a clear and engaging way.
+
+Meticulous, skilled analyst with a background in financial analysis and company research, a talent,
+
+etc., etc. it's interesting that this construct of having us tell the back story, it really does encourage
+
+better prompting.
+
+If I were just writing a system prompt instructions as we did last week, I probably wouldn't think
+
+through expressing myself this way in terms of using a word like meticulous and meaningful insights
+
+and so on.
+
+So it is helpful.
+
+Putting us through the discipline of having to give a backstory, helps give more context, and helps
+
+make sure that we're going to get the best outputs, the best outcomes from running the LM.
+
+All right.
+
+So with this, let's now talk about our tasks.
+
+Okay.
+
+So we're moving over to tasks.
+
+And we are going to have a research task and an analysis task.
+
+So it's not too different to the the boilerplate one.
+
+But we are going to do a little bit more work here.
+
+So for the research task going to really spell out what it is that we want this task to involve.
+
+Conduct thorough research on this company.
+
+Focus on the current status and health, the historical performance challenges and opportunities, recent
+
+news, future outlook, potential development.
+
+Make sure to organize your findings in a structured format with clear sections, and then the expected
+
+output is a bit repetitive, but it says what we want the well-defined sections and we again mention
+
+the input the company.
+
+And that is going to be assigned to the researcher.
+
+Okay.
+
+And the analysis task.
+
+Now you'll notice there's no output file there.
+
+So you might be thinking what what's going on here.
+
+Well let's see.
+
+Now let's give this a description that is going to be quite detailed.
+
+Again analyze the research findings and create a comprehensive report.
+
+The report should.
+
+And then we have the different sections in the report.
+
+Executive summary information insights market outlook and be formatted in a professional style.
+
+And for the expected output will again be a bit repetitive here.
+
+There's never a harm in being repetitive.
+
+Polished professional report on the company representing the research findings and the agent that we
+
+want to mention here.
+
+Of course should be the research.
+
+This is the the sorry the agent is the analyst.
+
+That's the agent that we that we made for the analysis task.
+
+Of course.
+
+Okay.
+
+So there's a few more things that we want to add here.
+
+We want to make sure that the output from the research task is included as part of the analysis task.
+
+And crew gives us a super easy way to do that.
+
+You just type context.
+
+And yes, of course cursor tells us what to do by saying that context.
+
+Context can take a list like this.
+
+And we are giving the research task as part of the context that's needed for the analysis task.
+
+And just with that simple step, we ensure continuity and we ensure that the output is included in the
+
+research task.
+
+And then finally we are going to have an output file for this.
+
+And we're going to let's let's call that report.md in the output directory.
+
+That seems fine.
+
+Okay.
+
+And now to the all important crew dot I.
+
+And here we have as usual, some gunk.
+
+We have the financial researcher I am.
+
+I'm going to be bold here.
+
+I'm obviously I'm going to leave in oops.
+
+Say that and I delete it.
+
+I'm going to leave in the config file that we want.
+
+And I am just going to delete everything else.
+
+And then we're just going to rewrite it.
+
+You want me to rewrite.
+
+Well we're going to rewrite this entire file right now okay.
+
+So what do we want here.
+
+We want an agent.
+
+So we put in the decorator for agent.
+
+And uh let's see.
+
+Well let's just press tab and see what we get.
+
+We want an agent that is the researcher.
+
+That's correct.
+
+We probably want to say verbose is true.
+
+There we go.
+
+And then we also want an agent that's called the analyst.
+
+And that is going to be an agent that is going to what's happening all over the place.
+
+Sorry.
+
+This is an agent and this should be an analyst.
+
+And now we're getting help from cursor.
+
+That all looks great.
+
+Okay, so now we want to have a couple of tasks.
+
+So we want to have a task that is called the research task.
+
+That sounds right.
+
+It's going to be a task that is going to the research task.
+
+That's perfect.
+
+And the analysis task that looks good to me as well.
+
+So all is well.
+
+And now we want the crew and yes thank you.
+
+Very nice cursor.
+
+It's filling it all in for us.
+
+We want the process to be the process sequential and verbose to be true.
+
+Crew cursor is faster than me.
+
+I'm playing catch up here but that is perfect.
+
+So remember self dot agent is populated.
+
+Sorry.
+
+Self dot agents is populated because we have agent decorators around our agent functions methods and
+
+then tasks is also decorated here.
+
+So everything looks great to me.
+
+Okay, now we go to Maine, and I think, again, we're going to want to, uh, delete all of this and
+
+start again.
+
+And I will type it for you manually.
+
+Okay.
+
+Here we go.
+
+So we're going to delete the gunk.
+
+We are going to delete everything but just only leave in run.
+
+That's going to be it.
+
+Okay.
+
+So run the researcher crew.
+
+Isn't it amazing that cursor realized knows that our input is a company that that inputs.
+
+We did indeed just have company as the templated curly braces thing.
+
+Just in case you don't know what I mean.
+
+I mean, we have this right here.
+
+Company is the one input that needs to go in to our YAML.
+
+And if we go back to main, then automatically cursor realized that we needed to set company and populated
+
+it there.
+
+All right.
+
+Then we're going to say yeah Result is the financial researcher.
+
+And that all looks great to me.
+
+And then we're going to print the results.
+
+Thank you.
+
+Cursor.
+
+And that's really it.
+
+I think that's all we need.
+
+Now you might be thinking hey, didn't we set up Serpa?
+
+Are we not going to use that for something?
+
+We are going to use it for something.
+
+But all in good time.
+
+Let's first just try running this without making any any proper Google lookup and see what happens.
+
+Okay, well, just before we run it, let's let's change the models.
+
+Let's give ourselves some more interesting models to experiment with for our researcher.
+
+Let's go with deep seek.
+
+Now of course you could do whatever models you would like here.
+
+This should be deep.
+
+Seek chat.
+
+That'll be the right one for us to use.
+
+And you could stick with OpenAI.
+
+Or you could use a different model, or use a llama and run it locally if you wish.
+
+I will try a grok model for this one.
+
+Let's use this this here llama three 370 billion.
+
+Versatile.
+
+That's one of the most powerful open source models from from meta.
+
+And we'll use that via grok the high performance inference.
+
+You can also run something locally like use a llama to to run llama 3.21 million or 3 billion version
+
+of it.
+
+So that's just a mix up the models to try something a bit different.
+
+And now let's go and open up a new one of these guys a new terminal.
+
+Let's make it nice and big.
+
+And we will go into project or folder number three for crew.
+
+We will go into our financial researcher.
+
+And you remember we type crew I run to kick this off and we'll see what happens.
+
+It's thinking now I will tell you that uh, you'll see, by the way, that the agent has been assigned
+
+the task financial researcher for Tesla.
+
+That shows how that those inputs, those parameters automatically got set as the, the, uh, the agents,
+
+uh, roll.
+
+Now, I'll tell you that the deep sea takes takes its time over this.
+
+It takes a good 30s, I guess, because it's producing quite comprehensive research as part of this.
+
+So we will allow it to do its thing.
+
+Maybe next time we should have them both be grok so that it's nice and fast.
+
+But it's going through.
+
+It's, uh, we've gone off to deep sea guys servers where it is.
+
+The 671 billion parameter model is busy at work, and once it's finished, we're then going to flip
+
+across to our other agent, and our other agent will use grok running in the cloud a 70 billion meta
+
+model.
+
+And then we should get our financial report on Tesla at the end of it.
+
+Here it is.
+
+Grok was so quick we didn't even see it.
+
+There's uh the grok taking the task and completing it.
+
+Here is the result.
+
+Our financial report on Tesla.
+
+It all looks great.
+
+Wasn't that easy?
+
+** Enhancing AI Agents with Web Search: Solving the Knowledge Cutoff Problem
+And of course, the key point for us to have focused on here is that this second agent that did the
+
+summary of the research report on Tesla was taking advantage of the output from the first agent, because
+
+that was included in its context.
+
+And that's how it was able to give what it gave.
+
+And you'll note, if we look into this, that it's as of October 2023.
+
+And that's a bit disappointing because that's clearly not right now a key financial metrics Q3 2023.
+
+And yeah, we're not we're not super happy about that.
+
+And that is, of course, because we're relying on the context on the on the knowledge cut off from
+
+deep seq that did our research and deep seq didn't have more, was last trained back in 2023 and doesn't
+
+have more recent information, which is unfortunate, but something that we can now fix.
+
+So the way we're going to fix it is by adding in a tool, which is the big plan for for this week.
+
+And it's going to be quite easy.
+
+So we do that by going back.
+
+Let's close this and go back to the other crew module which is where we define our crew.
+
+And we are going to add another import here.
+
+We're going to import from Cru AI tools.
+
+And yeah it's there's not going to be much of a job for us in, in the not not too distant future.
+
+So yes indeed.
+
+Clever old cursor knows that we want the Serpa dev tool here, which is indeed what we want, which
+
+is a tool from crew AI that's able to do Google lookups using our Serpa dev account.
+
+And so you need to put your Serpa API key into the EMV file.
+
+But now the now is the challenging, the difficult task of giving the researcher the ability to use
+
+that tool.
+
+That's what we want to do.
+
+And the way we're going to do that is we're going to say that we only want our researcher tool to have
+
+it.
+
+So it's not difficult at all.
+
+It is really rather easy.
+
+We simply create an instance of the Serpa dev tool, and we pass that in in this tools list right here.
+
+That's all it will take.
+
+I save that and we should be good to go.
+
+Maybe we'll go back to models, though, and pick a different model.
+
+Let me see.
+
+We're going to go back to agents.
+
+And why don't we just use OpenAI, GPT four or mini so that we have a faster time of it?
+
+Okay, let's give this a shot.
+
+Let's bring up our terminal.
+
+Let's exit that one actually.
+
+Let's just start again.
+
+I could have typed clear.
+
+We go into the third directory into crew.
+
+We go into our financial researcher directory and now we type crew.
+
+I run and we're hoping now that it's going to go and look up using that tool.
+
+It's going to look up Google about Tesla.
+
+And we're going to get some information.
+
+Financial researcher in progress.
+
+There's something happening here.
+
+There's lots happening.
+
+Search the internet with Serpa.
+
+You can see it's doing its stuff.
+
+Plenty of search is happening.
+
+Tesla latest news today.
+
+I see 2025 appearing in the search results.
+
+This is promising.
+
+This is good news, but we'll soon see.
+
+So the researcher is still working.
+
+It's now on the report writer.
+
+We're now talking to grok.
+
+And here is the summary.
+
+Here is the report.
+
+And it's great to see we do indeed have a report as of early 2025.
+
+And we've got the most recent news from Tesla hasn't done as brilliantly as usual in the last month
+
+or so in the last few weeks, including.
+
+It's definitely got relevant recent information in this report.
+
+And it is, of course, a clear and accurate report.
+
+And, you know, it's fantastic to see this stuff.
+
+And I guess the the usual things for you to appreciate.
+
+One is that this is actually a high quality output.
+
+This is something that would genuinely, legitimately be useful if you spent about ten minutes, 15
+
+minutes yourself searching the internet, doing some searches, gathering some information, synthesizing
+
+it into an email like this, you probably would come up with something quite similar.
+
+It's it's it's proper work that's been done with a good output.
+
+And the other part of this is how easy it was to build this whole infrastructure.
+
+Thanks to crew, thanks to just a couple of of commands, building this and then writing in plain English
+
+in these YAML files, Our objectives for our couple of agents and tasks, and then just giving it the
+
+tool, it was able to handle all of this.
+
+And unlike OpenAI's costs of 2.5 cents per lookup, these costs have been coming out of our free credits.
+
+And so this has cost us nothing.
+
+Okay.
+
+Well, I hope you enjoyed that and I hope you've done it yourself and had a similar outcome.
+
+And I will now see you for the wrap up.
+
+Well, I hope you enjoyed that.
+
+And you've tried it yourself and experimented with some different models.
+
+If you're using a llama, experiment with some different free open source models, try messing around
+
+with the instructions and the backstories and see what it what it takes, what sorts of differences
+
+you can make, and try other kinds of quick agent projects that involve using searches.
+
+And you're getting more and more familiar with Crewe.
+
+And I imagine, like me, that you quite enjoy using Crewe AI as well.
+
+It has a lot to love.
+
+All right, next time we're going to take this project a step further, and we're going to experiment
+
+with some of the more advanced features of Crewe.
+
+See you then.
+
+
+***  Building a Crew AI Stock Picker: Multi-Agent System for Investments
+
+And welcome to crew week three.
+
+Day three.
+
+It is time for us to build a new project.
+
+The stock picker that I'm looking forward to showing you a quick reminder on the five steps that we
+
+use to build a crew project from last time we use crew, I create crew.
+
+We fill in the YAML files, we complete the crew module, we update Main.py to set any inputs for doing
+
+the run, and then we call crew I run.
+
+This time we're going to be going deeper again in three new ways.
+
+First of all, structured outputs will have a comeback.
+
+We looked at them last week.
+
+We'll do them again with crew.
+
+We'll use a custom tool in addition to the tool that we'll use again.
+
+We'll also build our own tool.
+
+And then thirdly, we will try out the hierarchical process allowing crew to manage the process of what
+
+task goes where.
+
+And as you'll see we'll have a bit of an adventure with that.
+
+All right.
+
+Let's get started.
+
+Okay.
+
+Here we are back in cursor.
+
+Back in Project Directory three crew.
+
+And let's open this up and we will bring up a terminal window again.
+
+As before, we'll go into that directory and we're going to create our new project which is of course
+
+crew I create crew.
+
+And then the name of the project which is going to be Stock picker, a project to create and recommendations
+
+for investing in the stock market, bearing in mind that this is purely for our own investigatory purposes
+
+and you should not use this to make any trading decisions, please.
+
+Okay.
+
+We're going to select open AI as our provider.
+
+And we're going to choose GPT four and mini.
+
+And we're not going to set up any env variables.
+
+And the crew has been successfully created.
+
+All right.
+
+It's now first of all time for us to open up our stock picker.
+
+And as usual go into source, go into config.
+
+And the first step is to create our agents.
+
+So we will go ahead and do that now.
+
+Okay.
+
+So here we are in agents YAML.
+
+And we're going to create the agents for this project.
+
+And there's going to be a few of them.
+
+So I'm going to bring them in an agent at a time so that we can talk them through.
+
+So the first agent is called the Trending Company Finder.
+
+And it's responsible for looking in the news and finding trending companies in a particular sector.
+
+So you read the news.
+
+You find 2 to 3 companies that are trending for further analysis.
+
+And we'll use GPT for a minute here.
+
+But you can of course substitute in whichever model you'd like.
+
+And it might be fun to play around with different ones.
+
+The next one we will use, and let me make sure I paste this in properly.
+
+There we go.
+
+Is a financial researcher the financial researcher.
+
+Given details of trending companies you provide comprehensive analysis.
+
+So financial expert with a proven track record of deeply analyzing hot companies.
+
+Again we'll go with GPT four mini as the backstory.
+
+Okay one more agent that we're going to work with, and that next agent is going to be a stock picker.
+
+So we've done we've we've found trending companies in the news.
+
+We've researched those trending companies.
+
+What's left to do is to pick one.
+
+So the stock picker given a list of research companies with investment potential, you select the best
+
+one for investment, notifying the user and then providing a detailed report.
+
+Don't pick the same company twice.
+
+You're a meticulous, skilled financial analyst with a proven track record of equity selection.
+
+These are all great ideas for well crafted prompts to be using.
+
+And again, we'll use GPT four mini for now and let's save that.
+
+I'm going to add in one more agent as well.
+
+A new agent for us to be exploring this time.
+
+And the new agent is going to be a manager.
+
+But I'm going to keep this manager very simple.
+
+The role is a manager, and I'm saying you're a skilled project manager who can delegate tasks to.
+
+In order to achieve your goal, which is your goal is to pick the best company for investment.
+
+And that's it.
+
+So very simple vanilla description of that agent.
+
+And therein there is our four agents for this project.
+
+So far so good.
+
+You like those four agents.
+
+It's time for us to define the tasks.
+
+And when defining tasks the trick is to be very clear, very simple.
+
+And so the first task is a find trending company's task.
+
+Find the top trending companies in the news in this sector by searching the latest news.
+
+Find new companies that you've not found before and the output, a list of trending companies in that
+
+sector.
+
+And we are going to say that assign it, of course, to the agent.
+
+The trending company finder is the agent that will work on this, and it will put it in an output file.
+
+Trending companies in output that.
+
+You may be wondering why that says JSON.
+
+It will become clear in one second.
+
+Okay.
+
+So then going to have our next task.
+
+And our second task is going to be a research trending companies task.
+
+The description is given a list of trending companies provide a detailed analysis of each company in
+
+a report.
+
+And the agent of course will be the financial researcher.
+
+The second agent that we made.
+
+So this this 1 to 1 correspondence between a task and an agent right now.
+
+And we're giving it we're telling it to have some context.
+
+And the context is the find trending companies task.
+
+And we're asking it to put it in an output as well.
+
+And you can see that already cursor is one step ahead.
+
+But we're going to ignore cursor.
+
+And I'm going to put it in myself.
+
+The pick best company task is the final task in the list.
+
+It's of course assigns to the stock picker agent, and it is to analyze research findings, pick the
+
+best company for investment, then send a push notification to the user.
+
+That's a new one.
+
+You can imagine that it's going to be the tool that we will add, a tool that we've used before.
+
+But the first time in crew and we'll, we'll ask for a one sentence rationale and then respond with
+
+a detailed report on why you chose this company and which companies were not selected.
+
+And then the agent I just said was a stock picker.
+
+And the context is of course, the research trending companies.
+
+So there we have it.
+
+We've now defined our tasks.
+
+And again, it's worth noticing how I've made these prompts very instructive, very crisp.
+
+I've used consistent language with things like trending companies.
+
+All of these, these are all small steps that help make sure you get coherent responses.
+
+Although as you'll see, it's not going to be perfectly coherent.
+
+But it definitely helps.
+
+And I've experimented with this a fair bit.
+
+And in previous versions, when I was iterating on this, I had inconsistent language between agents
+
+and tasks and definitely causes less stability.
+
+So I think that's a that's a pro tip for you.
+
+**  Implementing Pydantic Outputs in Crew AI: Stock Picker Agent Tutorial
+
+And now it gets juicy.
+
+Now we're going to go to Crewe and we're going to start building a bunch of different things.
+
+So the first thing is that I want us to use structured outputs.
+
+In other words, we are going to ask our different tasks to be providing information according to a
+
+particular JSON schema as a way of making sure we're getting the information that we want from these
+
+agents in a robust sort of way that is kind of on rails.
+
+And so, as you probably remember, the way to do that is to create classes that are subclasses of base
+
+model and use this as a way of describing what we want.
+
+So let me give you an example.
+
+Let's make a class that's called trending company.
+
+And so this is a subclass of base model.
+
+We give it an explanation.
+
+It's a company in the news attracting attention.
+
+And then we set up name ticker and reason.
+
+And we give them descriptions like this.
+
+And you can see this is a way of, of laying out the information that we're going to want to be gathering.
+
+And it helps guide the agents and the tasks to, to to produce information that we want.
+
+And now I'm going to make a second class.
+
+That is basically just a list of these.
+
+So it's called trading company list.
+
+And it contains a single field companies which is a list of these objects.
+
+It's a way to organize it so that one task can result in a bunch of trading companies.
+
+So far so good.
+
+We're going to do pretty much the same thing again for our research.
+
+So we're going to have a trending company research schema.
+
+Here it is.
+
+So again it's a it's a pedantic class a class that is a subclass of base model.
+
+And it's detailed research on a company.
+
+It has a name, market position, future outlook and investment potential.
+
+And by giving the fields with that name and with that description, we are going to force the agent
+
+to produce that information in its response.
+
+And so it's a really clever way of making sure that we guide the agent's behavior.
+
+And similarly we're going to add a list trending company research list, a detailed list of of all of
+
+the research on the companies, and it's a list of trending company research objects of these objects
+
+with these descriptions.
+
+And again, I find it helpful to be mindful that you use consistent, clear terminology.
+
+I used to have.
+
+I used to my first version of this, I called these newsworthy companies, and I was just introducing
+
+concepts that weren't crystal clear in terms of what I was going for.
+
+And and this has helped make it more reliable using simple and and common terms and using them consistently.
+
+Okay, now it's time to define our crew, our class stock picker.
+
+And as usual we look at the YAML files.
+
+We bring them in here.
+
+And I've deleted the rest of the gunk that it auto generates so that we can build this ourselves from
+
+scratch.
+
+And we're going to start by creating our trending company finder agent, which I'll do like this.
+
+And we need to give it of course the decorator agent like that.
+
+So this is a trending company finder.
+
+It's going to return an agent configured with the config and we're going to use a tool which will be
+
+let me tidy this up for you.
+
+There we go.
+
+It's going to use the super dev tool as before so that it can look for trending companies on the internet.
+
+That seems pretty good.
+
+All right, let's make our second agent.
+
+And this second agent is going to be our financial researcher agent.
+
+And so let's see we're going to want to again use Sirpa.
+
+So we're going to have it look at the config again for the financial researcher and the tools we.
+
+I was wondering what was going on there.
+
+I was missing the deaf deaf financial researcher like so that's going to have an agent.
+
+And there we go.
+
+Now it should work fine.
+
+All right.
+
+That seems good.
+
+And it has suggested cursor has kindly suggested that we do this, which seems good to me, except we
+
+don't really need this.
+
+We don't need to have the Sirpa dev tool in there, because the stock picker has been given all of its
+
+information, it's not going to need that at all.
+
+All right.
+
+So that is the definition of our three agents.
+
+Let's go on to defining our tasks.
+
+Okay.
+
+So it's time to define the first of our tasks.
+
+And the first task is the task to find trending companies using the trending company finder.
+
+And here it is.
+
+Find trending companies is creating a task.
+
+This is the config.
+
+And we also have this field output pedantic.
+
+And that is telling it that this task needs to output some JSON in the schema that conforms to trending
+
+company list.
+
+And that of course is this object right here.
+
+So we are constraining it to make sure that it produces something in that format, which is exactly
+
+what we want.
+
+And so this is the way that you do structured outputs in crew.
+
+And now the research trending companies task.
+
+This is going to again be hooked up to the right config.
+
+And this of course is going to create the trending company's research list.
+
+Pedantic object.
+
+So here we go.
+
+If we look back up, this is, of course, this object right here.
+
+A list of research results.
+
+So we are saying this task to research is going to be forced to produce information that conforms to
+
+that schema.
+
+And that way we know we're going to get research.
+
+Hopefully you're following along with this.
+
+If not then do look at the code and try this out for yourself.
+
+We're almost done.
+
+We're just going to add in the best company picker, which is right here, and which is going to select
+
+the best company.
+
+And that's an easy one, an easy one to end with.
+
+And now we've got left to do is actually create our crew.
+
+All right.
+
+Time to create the crew.
+
+We've made the agents.
+
+We've made the tasks.
+
+Here is the crew.
+
+You may be thinking to yourself, we only created three agents.
+
+Did we have a fourth agent?
+
+Yes, we did, but that fourth agent is a bit different.
+
+It's the manager, and we don't want that to be in the list of the of the, the general agents that
+
+are going to be working on the task at hand.
+
+We're going to want to create this separately and handle it separately.
+
+So we create our manager agent like this just as a, as a as a separate variable manager, an agent
+
+that has the config from that's called manager.
+
+And we also use this field allow delegation equals true.
+
+That is telling crew that we want it to be able to delegate to other agents.
+
+That would be the equivalent of the handoff in the OpenAI agents SDK.
+
+All right.
+
+And so now it just remains for us to actually return our crew from this function here from Def Crew.
+
+And we're going to do it like this.
+
+Return crew.
+
+The agents is self dot agents.
+
+And that is a three agents with the decorators above.
+
+Those are the agents that form this team, this crew.
+
+The tasks are the tasks that we defined.
+
+We're now saying the process is process hierarchical not process sequential.
+
+And that means that we are going to assign an LM to figure out which agent does what task.
+
+Verbose is true.
+
+And this is where we specify the agent.
+
+It's the agent we created right here.
+
+We could just just create that agent right there in the code.
+
+But it's a bit neater to do it this way and that is the end of it.
+
+Now there is actually an alternative here.
+
+You don't need to create a separate manager agent.
+
+You can actually say manager LM equals and just define an LM like GPT four or something.
+
+But um, I found it perform slightly better if I get the opportunity to describe the role of the manager.
+
+But both did work.
+
+But as you'll see, neither works perfectly.
+
+Haha.
+
+It's an adventure.
+
+As I say, it's a very interesting insight into some of the challenges of of autonomous AI, but still
+
+it works better if you define the manager separately.
+
+And one other point I'll make is that in defining that manager, I don't know if you spotted this,
+
+but I'm actually using GPT four, not GPT four mini.
+
+I'm using the bigger version, which means it's a slightly more pricey, so you can make that for a
+
+mini if you'd prefer, but I found that that helped it stay more coherent with the mission at hand.
+
+So anyway, that is defining the crew.
+
+
+*** Custom Tool Development for Crew AI: JSON Schema & Push Notifications
+
+
+Okay.
+
+Well, it remains for us to write the the main the run function in here.
+
+I deleted the default template one that's there usually, and I'm replacing it here with a simple run.
+
+The crew we're going to pass in the sector as technology.
+
+We don't actually need a current date in there at all.
+
+That will do fine.
+
+We don't use current dates and the result is Stockpicker kickoff passing in the inputs.
+
+And then we will print results at the end.
+
+So there we go.
+
+This is our starting point.
+
+I think we should give this a whirl okay here we go.
+
+So we're going to bring up our terminal as usual with control and the tick.
+
+And then we're going to go into our third folder.
+
+And we are going to go into the stock picker.
+
+And we're going to type crew.
+
+I run to kick it off.
+
+And now here's the thing.
+
+It's going to be interesting to watch this.
+
+The crew process is, by its very nature, a little bit less predictable than we might want.
+
+It is autonomous and it goes off and does its own thing, and that can involve all sorts of searching
+
+around and using multiple agents.
+
+It can sometimes go back to do some news and analysts and then using the researcher, and it can take
+
+quite a while as it goes through its processing.
+
+And my machine is chugging away like crazy, as will yours.
+
+And it's both.
+
+The great thing, and perhaps the downside of autonomous agentic AI, that we have a bit less control
+
+over how this process is followed, and so I will let it do its thing.
+
+I will break and come back when it completes its recommendation.
+
+And here we have it.
+
+It actually completed pretty much right as I was pausing there.
+
+So it was quite quick.
+
+It made a decision to recommend anthropic and it says, which was interesting because it was OpenAI
+
+that was doing this, this processing, which is and it turns down a couple of a security company,
+
+Peregrine and a crypto company, circle, and we can look in our outputs folder where we'll see that
+
+this decision is shown.
+
+And we'll also find a research list here.
+
+And also the trending companies list.
+
+And these of course are in the JSON format that conforms to our schema.
+
+So we are seeing here the proper formatted results because we required that by using structured outputs.
+
+And so despite my misgivings about the autonomous framework it actually performed really well.
+
+It did just go through the process.
+
+It should do.
+
+The manager that we'd set up had some autonomy in how it assigned out the tasks, but it did so well
+
+and as a result, we did indeed achieve a stock pick recommendation, which is not intended for real
+
+trading decisions, which is in this case for anthropic.
+
+All right, it's time to make our solution have a few more bells and whistles.
+
+First of all, we're going to add a tool.
+
+You'll see if you look in the source folder in the stock picker folder that's generated for you that
+
+there's already a folder called tools that the people at Cru have kindly made for us.
+
+And there's one in there called Custom Tool that has a kind of typical layout for these sorts of, of
+
+tools.
+
+And we are going to change the name of custom tool, and we're going to make it into push tool.
+
+So let's do rename and make this a push.
+
+Hang on click there.
+
+Try that again.
+
+Rename to push underscore tool dot pi.
+
+So the way that it works if we look in here is that you'll see that there is a when you set up a custom
+
+tool you have to first describe using a pedantic object, the schema of what will be passed in to your
+
+custom tool.
+
+And then you end up writing an underscore run method, which is going to take that schema as its parameters.
+
+So to make that feel more real, I'm going to, uh, actually implement that.
+
+And let's just start with a couple of, uh, imports here and now.
+
+So we're going to have a push notification input which will be a subclass of base model.
+
+And we're going to change the description that this is uh what is the meaning of this input.
+
+It's going to be a message to be sent.
+
+Sorry to be sent to the user okay.
+
+And now instead of an argument we're going to say message.
+
+That's what we're going to call it.
+
+And the description will be the message to be sent to the user.
+
+That seems pretty clear.
+
+Okay.
+
+So that is then defining the schema for our tool.
+
+It's in other words this here is actually going to be message to to correspond with that.
+
+That's what we will run when the tool is invoked.
+
+So or invoked rather than invoked.
+
+So uh we will um give it a name.
+
+So first of all we should change the class to be push notification tool.
+
+There we go.
+
+Thank you.
+
+Cursor.
+
+The name let's say is going to be send a push notification and the description is going to be this tool
+
+is used to send a push notification to the user.
+
+That seems pretty decent to me.
+
+Okay.
+
+And the schema for the args.
+
+This is where we say what kind of arguments do we need you to pass in.
+
+Well, that's exactly the schema that we've just defined right here.
+
+So it is something which just has a single argument message.
+
+And there you go.
+
+You see we've written a run method with a single input message.
+
+And that is going to actually send a push notification.
+
+And how do we send a push notification.
+
+We use the fabulous Pushover tool.
+
+And hopefully in your environment you have Pushover user and Pushover token set in your env file from
+
+prior week and then I just used I've just pasted in exactly the same code we have from the prior week,
+
+and we will push this message to the user and then return that that was okay.
+
+So that is our push notification tool.
+
+Now we have to put it to good use.
+
+Well this should be pretty easy actually.
+
+We're back in the crew.py module and we add in an import to import in the push notification tool.
+
+Now which of our agents do we want to be able to do this.
+
+We want the stock picker agent to be the one that will have this power the stock picker.
+
+You can see cursor of course already tells us that's exactly what we want.
+
+We want the stock picker to be able to call the push notification tool.
+
+That's as simple as that.
+
+All right.
+
+With that, let's go and run this.
+
+We'll do that right away.
+
+We will bring up this.
+
+We will clear what we have here.
+
+And we will just call, cry, run and give it a whirl.
+
+Let's see what happens.
+
+I will let this run and I'll be right back.
+
+And here we go.
+
+It's completed.
+
+It's this time recommending circle, which was one of the runners up last time.
+
+And I can assure you, you can see it right here that I did indeed get a push notification about the,
+
+the the opportunity, which is great.
+
+So it is working.
+
+And that then is the extra piece that we've added into this.
+
+So just to recap, we built this agent framework and the three things that are different than the way
+
+we've done it before.
+
+First of all we've used structured outputs.
+
+So we've required that tasks respond conforming to a JSON schema that we set.
+
+Secondly, instead of using the sequential process, we use the hierarchical process, which means that
+
+we can either pass in an LLM by model name or by passing in an agent that will take care of assigning
+
+the tasks to the agents.
+
+And we did that.
+
+And we saw, I think, both the good and the bad of doing so.
+
+And then thirdly, we added a custom tool, a tool that we wrote ourselves.
+
+And it's a familiar one.
+
+It was to send a push notification.
+
+And we armed an agent with that ability and it pulled it off successfully.
+
+And so that then is wraps up this week's project.
+
+And I'll see you for the wrap up.
+
+I think I might have just said that.
+
+That wraps up this week's project.
+
+Of course, it wraps up this day's project.
+
+We've got lots more to go.
+
+And in fact, tomorrow and in the next day before we move on to the next project, I do want to add
+
+one more bell and whistle to this project too.
+
+So we're not completely through with the stock picker either, so stay tuned for that.
+
+But again, to recap, we just did structured outputs, custom tools and hierarchical process.
+
+And tomorrow we're going to we are going to add a little bit extra to stock picker but then also work
+
+on the next project, the developer agent.
+
+And I'm really excited about that one.
+
+Good old crew is coming through strong.
+
+See you then.
+
+
+** Crew AI Memory: Vector Storage & SQL Implementation for AI Agents
+
+And week three.
+
+Day four is a go.
+
+Let's get started.
+
+So last time we did a stock picker and we just have a little tiny bit more to put into that.
+
+And then we're going to move on with our next project.
+
+A developer agent.
+
+But first another repetition.
+
+I hate to repeat these things, but sometimes it's good to drum it in.
+
+Building a crew project involves five things.
+
+First of all, crew I create crew.
+
+The name of the project to set up your crew, build those directories and those files.
+
+Number two, you find the YAML files for your agents and tasks, and you fill them in to define your
+
+agents and tasks.
+
+Number three, you go to the crew.py module, which is where you actually create the instances.
+
+And you use decorators to identify the agents and tasks that you'll be using.
+
+And then you create your crew itself.
+
+And this is where you can have structured outputs to make sure that the outputs conform to a schema.
+
+And you can use tools, both tools like Serpa, that crew provides for us that run remotely, and then
+
+custom tools that we build locally, like the thing that sends a push notification.
+
+And then number four, you update Main.py to set any inputs so that we can pass something in, configure
+
+the fields that are templated with the curlies.
+
+And finally we run with crew.
+
+I run and off goes our project.
+
+So I now want to cover a feature of crew called memory.
+
+And this is a feature that is a bit more prescriptive, a bit more opinionated in the crew framework.
+
+Memory, of course, is talking about how you provide information, contextual information to Llms each
+
+time you call them, and you can implement that yourself just by storing variables and then passing
+
+them in when you do things like creating tasks so you can do it the sort of manual way.
+
+But the crew framework also comes with some building blocks that lets you use their constructs around
+
+memory out of the box, and that comes with pros and cons.
+
+The pro is that you get up and running quickly, and you can use a lot of the thinking that they put
+
+behind this.
+
+The con is that there's there's a learning curve, and it obscures some of the detail of how prompts
+
+actually work behind the scenes.
+
+So as as with many times when you're adopting a framework like this, it's something to be aware of
+
+the benefits and the trade offs of doing so.
+
+But let's say that we are going to embrace cruise way of handling memory and talk about what it actually
+
+does.
+
+Well, it has five different types of memory, five different frameworks that you can include.
+
+And one of them is called short term memory.
+
+And this is just about storing recent interactions using a vector database in in a in a rag way.
+
+If you're familiar with retrieval augmented generation.
+
+And you don't need to be for this course because we're just going to put the code in there and see it
+
+run.
+
+But if you do no, then this will make more sense.
+
+So this will allow agents to access recent relevant information when they are currently executing.
+
+And then a different concept called long term memory is when more important information is stored in
+
+a SQL database for longer term recall to build up knowledge over over a longer period of time.
+
+And then there's something called entity memory that's very similar to short term memory, actually.
+
+It's it's basically when there's things about people, places and concepts, then those can also be
+
+stored in a Rag database for vector based similarity search and to be included in the context.
+
+And then there's crew describes this as another kind of memory.
+
+But I think it's a bit misleading.
+
+I think what they call contextual memory is just a sort of umbrella term for the short term, long term
+
+and entity memory that can all together be queried and passed in as context when prompting an LM and
+
+crew abstracts all this away from you.
+
+So it's just going to be a few lines of code to have all of these types of memories running.
+
+But in doing so, as I say, big benefit.
+
+A lot of work happens behind the scenes.
+
+And perhaps also there the trade off is that you've got less visibility into it.
+
+So if things don't go the way you want, then it's a bit harder to debug and figure out what's going
+
+on.
+
+And then there is another kind of memory called user memory, which is to store user specific information.
+
+And actually, at least as of now in Crewe, this is a concept that they support and have some frameworks
+
+around, but it's mostly left up to you to be querying user memory and then inserting it into the prompt
+
+or providing it at the right time.
+
+So user memory is a bit of an odd one out here, and I suspect that they're looking to build more into
+
+that in time.
+
+And for now, for the code that we're about to look at, we're just going to really look at contextual
+
+memory.
+
+So short term long term and entity memory and seeing how we can incorporate that into our stock picker
+
+solution.
+
+And so we're back in the stock picker project in cursor.
+
+And we are looking at the crew.py module.
+
+And I'm going to start by putting in some new imports in here, which are interesting ones from crime
+
+memory.
+
+We're going to import long term memory short term memory and entity memory.
+
+The three types we'll be working with.
+
+And I do believe you can also have user memory in there too.
+
+But then you have to manually manage it yourself.
+
+And then from my memory storage rag storage, we're importing a class called Rag storage for vector
+
+based retrieval.
+
+And with that we're also going to import from long term memory SQLite storage, long term memory SQLite
+
+storage object like that a class.
+
+All right.
+
+So that's a few things that we're now going to put to good use.
+
+We're now going to go to the crew function the function that creates the crew within this this module.
+
+And you can see where we made our manager.
+
+And we've got a few more things to make.
+
+As as cursor is trying to prompt us, they're trying to ignore cursors, insisting let's do it ourselves.
+
+All right.
+
+So we are going to to want to be creating a short term memory a long term memory and an entity memory.
+
+And we're going to do them one by one.
+
+So let's start by saying that the short term memory, which is the one that we'll begin with, short
+
+term memory, trying not to press a tab or it's going to fill it all in for me.
+
+But I'm going to I'm going to do it right here.
+
+Short term memory is going to be something which has rag storage.
+
+We we come up with a provider which is OpenAI, and a model, an embedding model to generate vectors
+
+from text.
+
+And we'll be using this one.
+
+And you can substitute in whatever models you would like here.
+
+It's going to be short term.
+
+And we give it a path to where we'd like it to create that memory, that vector store as memory.
+
+And it will use chroma as it happens, something which people who've taken my, uh, alarm engineering
+
+course know very well.
+
+I love chroma.
+
+All right, so that's the short term memory.
+
+Let's also create some long term memory.
+
+So here it is.
+
+The long term memory is going to be just simply creating an instance of this of this class long term
+
+memory SQLite storage.
+
+And we'll give that also a place to go.
+
+We'll make a database file also in the same directory.
+
+So that's the long term memory object.
+
+And now finally, thirdly, we're going to create a, uh, entity memory object.
+
+So entity memory.
+
+And there it is.
+
+So oh I see.
+
+Hang on.
+
+We've got two of them.
+
+Let's do that.
+
+Looks like that's good.
+
+So entity memory is going to be an entity memory object.
+
+It's also going to be a rag storage object.
+
+We give the provider and the embeddings model and we put it in the memory folder.
+
+So here we have our three types our short term memory our long term memory and our entity memory.
+
+And now we get to the place where we create our crew.
+
+And now it's going to be very challenging.
+
+It's not going to be challenging at all.
+
+We're going to say memory equals true.
+
+And we are going to then just do exactly that.
+
+So crew was a little bit off base with the memory equals part.
+
+But it's got the rest of it right.
+
+That's all you need to do.
+
+You set the long term memory the short term memory and the entity memory.
+
+And we are almost done with memory.
+
+Just just as simple as that.
+
+And I said almost because there is just one or rather two very small extra changes we need to make.
+
+We need to go back up in the module to where we created these agents the trading company, the financial
+
+researcher and the stock picker.
+
+And we need to give them memory.
+
+Now what we want is for the trading company finder to have memory.
+
+And we just do it by saying memory equals true.
+
+We don't actually want the researcher to have memory because we want it to go and do research every
+
+time.
+
+But we do want the stock picker to have memory, because we don't want it to recommend the same thing
+
+more than once.
+
+And I don't know if you remember, but in the prompts, in the YAML files, I said a couple of times,
+
+uh, don't, don't recommend the same stock twice and things like that.
+
+And, and surface new companies for the for the trading company finder.
+
+And that would normally be the final change you need to make is go back and make sure that your instructions
+
+and your YAML files are very clearly making sure that it will take advantage of memory.
+
+Because remember, whilst memory, these abstractions are trying to make memory seem quite magical and
+
+taken care of for you.
+
+At the end of the day, memory just means more stuff shoved into the prompt, more relevant context
+
+put into the prompt so that when you call an LLM it has knowledge.
+
+It's in the input is included information about prior conversations or about prior information that
+
+it retrieved.
+
+So with that we have set up set up the memory.
+
+And we are now going to bring up our terminal and then run this.
+
+And so as usual I go into already in the stock picker.
+
+So all I have to do is type a query I run and we'll be good to go.
+
+Let's see what happens.
+
+So just right off the bat, we expect it to be able to take advantage of memory without needing anything
+
+more.
+
+What we should see is it should create a memory directory in here.
+
+And it just has there is a memory directory.
+
+Stuff is going on.
+
+My computer is hard at work and I can see already within memory there is a Croma database that's being
+
+created.
+
+There is a long term memory.
+
+If I expand this, there is indeed a database that's been a SQLite database that's been created there.
+
+And so things are happening and we can see that, that, uh, various companies are being surfaced by
+
+the market watcher and more is going on and we will, uh, let this thing run.
+
+My computer's hard at work, and I will see you when we have a conclusion.
+
+And that definitely took a bit longer.
+
+It was going around around the houses a little bit, but it completed it.
+
+Recommended Microsoft this time.
+
+Remember, don't use this for real decisions.
+
+But it was, uh, entertaining to see it at work and bouncing around between the different agents.
+
+And whilst we don't have as much visibility into what's happening in terms of its use of memory and
+
+what context got provided, we can see that it's certainly built and populated different data stores
+
+and both the short term memory, the long term memory and the entity memory in the Rag chroma data store
+
+that's been created there.
+
+And the main point I want to get across is that, of course you can see the benefits of what this brings
+
+us.
+
+It was so easy to set up quite a complex situation, multiple types of memory with both vector similarity
+
+queries and SQL queries too.
+
+And we didn't need to know anything about it.
+
+We simply created the objects.
+
+The short term long term entity memory objects passed them in.
+
+And then we told our agents we turned memory on by saying memory equals true for the agents that we
+
+wanted to remember things.
+
+And that is a wrap on the stock picker project.
+
+We saw a lot of different aspects of Q AI with this project.
+
+We reminder, we saw structured outputs.
+
+We saw our own homegrown tool as well as Serpa.
+
+We also used the not the sequential but the hierarchical process.
+
+And now we have added in the memory feature all, all the three main types of memory in there as well.
+
+And that is a nice tour of a lot of the functionality in crew.
+
+
+***  Crew AI for Coding Tasks: Agents That Generate & Run Python Code
+
+And now for something completely different.
+
+We are going to work on making an agent that knows how to code, how to write Python code, how to write
+
+software, and a little bit more than that, it's not only going to know how to write software, but
+
+how to run it as well.
+
+So this is challenging and complex, but it's possible to have an agent in Crewe in the Crewe environment,
+
+which has this ability.
+
+Not only is it able to to take a problem that you set it, it can write code to solve that problem.
+
+It can then execute that code in a Docker container.
+
+It doesn't need to, but it's good to have it run it in a Docker container, which means that it is
+
+a sort of sandboxed, ring fenced environment that doesn't have access to do damage to your computer
+
+because it's in this protected world, and then it can run the code, it can execute it in that container
+
+and look at the results and interpret those results to take on some more action.
+
+So as I say this, this is this is a really advanced Task.
+
+This is something that's taking us to the next level, and it's going to be hard and complex.
+
+Except it's not going to be hard or complex.
+
+You probably saw that coming, but it is going to be as simple as when we create an agent, we're going
+
+to say allow code execution equals true.
+
+And that's going to be it.
+
+And then it's going to be able to execute code.
+
+And if you say code execution mode equals safe, then if you have Docker installed on your system and
+
+I will show you how to install Docker, if you don't, it will run it in a Docker container.
+
+And it seems almost so good.
+
+It's uh, it's crazy.
+
+I had to like close down docker to make sure that that it that it failed when I, when, when uh, when
+
+it was closed because I almost couldn't believe it was happening.
+
+It's that simple.
+
+And this is where frameworks like crew really stand out because they make things like this so very easy
+
+to do.
+
+It's worth mentioning that these this kind of system is sometimes called a Coda agent.
+
+It's various other names for it, you hear.
+
+And it's worth knowing that when people talk about Coda agents, they're not just talking about agents
+
+that can deliver code.
+
+Agents that are able to generate Python, but also this ability to generate Python and then run that
+
+Python as steps towards solving a greater problem so that this is more a means to an end than just saying
+
+it is something which which writes code.
+
+Now, confusingly, our project for this week we are going to build something that writes code.
+
+But but the fact that that it can run it too is kind of cool.
+
+So that is the introduction.
+
+And with that let's go and actually build something like this.
+
+Let's build something that can write it.
+
+We'll make something that can write code and can run it.
+
+Let's do that.
+
+See you in a sec.
+
+Okay.
+
+Welcome back to cursor.
+
+Welcome back to the crew folder.
+
+And I'm going to open up a new terminal and go into that third folder.
+
+And you know how to create a crew project.
+
+So well now that you have it committed to memory.
+
+But you know that it's crew I, which I can't spell crew, I create crew.
+
+And then the name of the project, which we will call coda, and it's going to build the directories,
+
+it's going to do the scaffolding.
+
+All we have to say that we want OpenAI and we want GPT for our mini, and we don't need a key.
+
+And Kabam, we have all of the folder structure.
+
+Great.
+
+Okay.
+
+So as always, the first thing we do is we go into the config and we start by defining our agents.
+
+So what agents are we going to have.
+
+We're only going to have one this time.
+
+It's going to be a very simple agent.
+
+Let me just remove this so we can see what we're doing.
+
+Let's delete the the scaffolding and put in our coda agent.
+
+So we're going to say you are a Python developer.
+
+That's the role you write Python code to achieve this assignment.
+
+And then we pass in the assignment that is the input that will be set in the run method.
+
+First you plan how the code will work.
+
+Then you write the code, then you run it and check the output.
+
+Backstory.
+
+A seasoned Python developer with a knack for writing clean, efficient code.
+
+And we can use GPT four or mini.
+
+Yes, you can do it either way, but we'll do what cursor suggests.
+
+Change it to have the provider and the name of the model which looks a bit better.
+
+Okay, so there we go.
+
+That's pretty simple.
+
+That was our single agent.
+
+And we're going to have one single task.
+
+Let's put it in here.
+
+It is right Python code to achieve this assignment.
+
+A text file that includes the code.
+
+So so the output we want from it is a text file that includes the code and the output of the code.
+
+We want it to put both in the output.
+
+So I've called it code and output text as the output.
+
+So that is what we want it to do.
+
+So because I really want to make the point that it's going to write code, run it, get the output and
+
+it's going to think all of this through and then respond with all of that.
+
+We don't just want it to give us the output because we want to double check what it's doing is right.
+
+Okay, now we know we have to go to the crew module.
+
+Let's do that next.
+
+Okay.
+
+Here we are in the crew module that I've just gone through and deleted the templating stuff that's in
+
+there by default.
+
+And so we're just leaving our config relationships here.
+
+And I'm just going to put a little comment here.
+
+Make that a comment as well.
+
+Whoops.
+
+So this is a link to how you can install Docker if you don't already have it installed.
+
+And this is just literally and this is the Docker desktop web page for you.
+
+And as it does claim, it is a one click install for Mac or Windows or Linux.
+
+And it should be as simple as that.
+
+Many of you, I suspect from an engineering background, already know and love Docker.
+
+If you don't, then welcome to it.
+
+This should be as simple as installing it and then it's installed and you can then leave it be, but
+
+you will need to have it installed for this to work properly in a Docker setting.
+
+Okay.
+
+So now we are going to create our agent.
+
+We start with an agent decorator to make sure it goes in the right place.
+
+And we are going to create a coder.
+
+I'm going to ignore the fact that cursor is already probably several steps ahead of me, rendering my
+
+job here useless, but we'll keep going anyway, I'm going to return an agent.
+
+This is the usual fare.
+
+So what is our agent going to do?
+
+Well, the I will press tab there.
+
+The config is going to be the uh config that we set in the YAML file.
+
+But then we'll have verbose being true as usual.
+
+Now what else do we want.
+
+We now want this super complex, super hard step of making sure that this agent has the power to run
+
+to, to, to execute code, which is as simple as allow code.
+
+Oops.
+
+Allow code execution equals true.
+
+There it is.
+
+Now it can execute code.
+
+There's this step of saying code execution Execution mode is safe, and now that ensures that it runs
+
+it within a Docker container so that it's not just running the code on your platform.
+
+Now we can say Max execution time.
+
+This is a good one to have in there.
+
+And we're going to say 30 30s.
+
+This is going to be a simple task.
+
+And max retry limit.
+
+It's funny that cursor prompted me wrong there.
+
+Let's give it five retries.
+
+It can have up to five times of trying this.
+
+And that is our coder agent.
+
+So now we have a task.
+
+And the task is going to be a coding task.
+
+And I rather suspect that, uh, we, uh, can just use what cursor does, but we can take out expected
+
+output because we already defined the expected output in the task itself.
+
+So it's not needed again.
+
+All right.
+
+So there we go.
+
+We have our agent and our task defined.
+
+Now we just have to do the crew function method just below.
+
+
+** Create a Python-Writing AI Agent: Practical Implementation with Crew AI
+
+Well, this might be a bit of an anti-climax.
+
+I'm just saying we have to write our crew function.
+
+We don't have to write our crew function because the default thing, there is all that we need.
+
+We don't need to do anything else.
+
+We've already got something which can do exactly what we want.
+
+What we do need to do still is come into main and rewrite this.
+
+And of course it's got all of the usual stuff.
+
+We don't need any of the stuff that's there.
+
+We'll just delete everything and come back here and write our own run function.
+
+Def run.
+
+This is the thing that's going to run the crew.
+
+And so we are going to say inputs equals assignment.
+
+How do I spell assignment.
+
+Assignment.
+
+There we go colon.
+
+Let's just give that a variable assignment for now.
+
+And then we're going to say results equals coder dot crew dot kickoff passing in those inputs.
+
+And then we want to print result Raw is how the result will come back and then we will indeed have.
+
+We don't need that main in there because it will automatically run that for us.
+
+Okay.
+
+And so what's left to do, of course, is to set the actual assignment.
+
+So let's come up with assignment assignment.
+
+And we're going to do something challenging here because I want to check if I said something like the
+
+default the cursor has got for us there.
+
+Right.
+
+A Python script that prints Hello world.
+
+Then we might not know for sure that it's actually running it, because Llms are perfectly capable of
+
+knowing what a script like that would yield would result in.
+
+So it could generate the Python code and then pretend it ran it.
+
+So we want something that it can't do any pretending for.
+
+And so I have one thing to show you, although knowing Llms, it probably could pretend this as well,
+
+but I certainly think this is a harder one.
+
+So I wanted to write a Python program to calculate the first 10,000 terms of this series, multiplying
+
+the total by four.
+
+So I put it in quite a complicated way.
+
+And here's the series one minus a third plus a fifth, minus a seventh plus dot dot dot.
+
+And so I'm just kind of it's a classic case of just sort of asking the LM to figure it out like a reasonable,
+
+intelligent human would.
+
+And who would have thought a few years ago that you could write software that would be able to take
+
+something like this with all of the nuance, all of the implications, and figure out that it needs
+
+to write code to put this into a loop, to keep it going for 10,000 terms, and then to take the total
+
+and multiply it by four.
+
+And the mathmos around will probably have already spotted this as being a very slow and very, uh,
+
+boring way to calculate pi.
+
+So if it does this right, and if it calculates the first 10,000 terms and multiplies by four, then
+
+it will be an approximation.
+
+A bad approximation of pi.
+
+And now the Llms are perfectly capable of recognizing this formula and knowing that the answer should
+
+be pi.
+
+But what's much harder is for them to realize that 10,000 terms would be approximately pi, and be wrong
+
+after a few decimal places.
+
+And so that's how we can tell that it's really doing its thing.
+
+So I hope that all makes sense.
+
+It's time for us to actually run this.
+
+All right, everyone, this is exciting.
+
+The drum roll.
+
+We're going to try and have our coder do its thing.
+
+So let's bring up a terminal.
+
+Let's go into the third directory.
+
+Let's go into coder and let's type crew I run to kick this off.
+
+And remember the challenge is now being set to our agent.
+
+You can see it started.
+
+There's the command and it's now going to be thinking about it.
+
+And something just ran and failed in the code interpreter.
+
+So it's that one means it's its first try and it's trying again.
+
+So it's not like it always works.
+
+At least it shows us that something is trying to run in an interpreter.
+
+Okay.
+
+It's done some code.
+
+It's got an answer.
+
+It just all happened really fast.
+
+So, um, this is the code that it's got, that it's written, and this is the output.
+
+It's used an interesting technique I can see it's it's obviously, uh, it's, it's going through the
+
+number of terms as it should do.
+
+It's a number of terms it sets down below.
+
+That's nicely done.
+
+And then it's using this idea of take minus one to the power of the index, which is either going to
+
+be minus one or plus one.
+
+It's a clever trick.
+
+And dividing by that which looks right to me.
+
+And then where do we see it multiplying the result by four.
+
+There, right there.
+
+I was going to say that would be suspicious.
+
+It does indeed multiply the result by four.
+
+And that's why we get 3.14149, not 3.14159, because it is just an approximation of pi.
+
+And it seems to have worked.
+
+And indeed, if also we see that it's created an output file.
+
+Yes it has.
+
+And here in the output file we will find the same output which has got the code.
+
+The output below it.
+
+And I gotta tell you, I'm blown away by how easy it is to do this.
+
+And all of the machinery that's happening behind behind the scenes to be able to start a Docker container,
+
+come up with the code, run the code, come up with the answer to the way that I expressed it.
+
+In quite a simplistic way.
+
+It just figured the whole thing out.
+
+And I think that's that's really cool.
+
+And there you have it.
+
+We just gave coding skills to an agent.
+
+We have our coder agent and it was so simple.
+
+And I hope you enjoyed it as much as I did.
+
+All right.
+
+Well, it ain't over yet.
+
+We've got more to go because the natural extension, now that we've got a coder, we can build an entire
+
+engineering team.
+
+It's really the goes to the meaning of crew.
+
+We're going to build a crew, an engineering crew, to be able to solve problems front to back.
+
+And it's going to be so great.
+
+I'll see you then.
+
+*** Building AI Teams: Configure Crew AI for Collaborative Development
+
+Well, this is a bittersweet moment for sure.
+
+It is the final day of our journey with crew.
+
+Fifth day of week three.
+
+While we complete the work we've got with crew, and it's going to be a great one.
+
+We're going to end on a high.
+
+We are going to build on the project we did last time.
+
+On day four, we're going to turn our coda into an engineering team.
+
+We're going to have an engineering lead depicted here by this person chilling out because, you know,
+
+that's what what leads do.
+
+Uh, we're going to have a back end engineer.
+
+We're going to have a front end engineer, and we're going to have a test engineer seen here as someone
+
+that's jumping on top, trying to trying to destroy, trying to break everything that they are given.
+
+So this is going to be our team.
+
+We're going to really use the crew and crew.
+
+I let's get to it.
+
+And welcome back to cursor.
+
+Welcome to our final project for crew.
+
+Let's bring up a terminal with control and the back tick.
+
+Let's go into that third directory.
+
+And now, of course, it is time to do crew.
+
+I create crew and it is engineering.
+
+Underscore team is the name of our project.
+
+Let's do it.
+
+Let's choose the options that it tells us.
+
+We want OpenAI.
+
+We want GPT four or mini.
+
+And then we skip making a token.
+
+And then there we have our directory structure.
+
+And now of course we go into engineering team.
+
+We go into source, we go into config and we open our agents YAML file.
+
+As usual we see the boilerplate ones there the researcher and the reporting analyst.
+
+So what are we going to do.
+
+Well we're going to first of all delete what we have here.
+
+And we're going to put in our first agent.
+
+And our first agent is going to be an engineering lead, the engineering lead for the engineering team
+
+directing the work of the engineers.
+
+Let's make that plural, take the high level requirements described here and prepare a detailed design
+
+for the back end developer.
+
+Maybe we'll leave this singular for now.
+
+If it's just one developer, everything should be in one Python module.
+
+Describe the function the method signatures in the module.
+
+The Python module must be completely self-contained and ready so that it can be tested or have a simple
+
+UI built.
+
+Here are the requirements.
+
+So this is going to be one of our input attributes that we can pass in.
+
+The module should be named module name.
+
+And the class should be named class name.
+
+So we are going to bring in those as well.
+
+So we're going to have this be a little bit configurable.
+
+And the backstory you're a seasoned engineering lead with a knack for writing clear and concise designs
+
+okay there we go.
+
+So so look, I'm going to put on an LM now and let's have something different to usual.
+
+I think we're going to go with Gpt4.
+
+We're going to have the big guy you.
+
+I've also run this with Gpt4 on many and it runs just fine.
+
+So you can do that too if you wish.
+
+And you get, you know, you get a bit more comprehensive, extensive solutions if you use its bigger
+
+cousin GPT four.
+
+Oh okay.
+
+so.
+
+And whilst that will work, of course the full way to do it is to show this is OpenAI slash like that
+
+with the provider.
+
+That is the first of our agents.
+
+Okay.
+
+So the next agent is going to be called a backend engineer.
+
+So the backend engineer is going to be a Python engineer who can write code to achieve the design described
+
+by the engineering lead.
+
+So the engineering lead will do the design will lay out the sort of foundations, and the back end engineer
+
+will do the coding write Python module that implements the design described by the engineering lead,
+
+but will also pass in the requirements again.
+
+So it's going to get the requirements along with the design and the module name and class name again.
+
+And it's given a decent backstory saying that it's a Python engineer with a knack for writing clean,
+
+efficient code.
+
+Follow the design instructions carefully.
+
+So again, we'll use a different model.
+
+We'll mix things up, and this time I suggest we use Claude 3.7 sonnet latest.
+
+Now sometimes we get an overload error from Claude?
+
+At least I do.
+
+As of now.
+
+So it's a little bit less stable, but nonetheless, it's a great coding model.
+
+Particularly so.
+
+I think it's a good one to use in this case.
+
+All right.
+
+Let's also add a front end engineer.
+
+And I say front end engineer.
+
+But it's going to be a gradio engineer a gradio expert who can write a simple front end to demonstrate
+
+a back end writer gradio UI that demonstrates the given back end all in one file to be in the same directory
+
+as the back end module, giving the requirements.
+
+Giving the back story.
+
+A seasoned engineer highly skilled at writing simple gradio UIs for a back end class.
+
+So there we have it.
+
+We, uh, explained that the UI needs to be in one module, and we'll use again Claude for this too.
+
+Okay.
+
+And one more agent.
+
+Our final agent is going to be a test engineer, but I'm slightly abusing the word there.
+
+It's not.
+
+It's not like a QA engineer.
+
+This is going to be a Python coder who knows how to write unit tests for a given backend module, because
+
+I want to see unit tests being built out here.
+
+So that's what the test engineer is going to do.
+
+They're going to create a test which is going to be called test underscore.
+
+And the name of the module which will be the backend module.
+
+And they're a seasoned QA engineer and software developer who writes great unit tests for Python.
+
+Code is the backstory.
+
+And you know, for for all of the coding part, we'll use anthropic.
+
+Maybe we should shake it up.
+
+Why don't we?
+
+Why don't we take a risk?
+
+We'll use deep seek instead.
+
+Deep seek.
+
+I'm just going to stick with deep seek chat because deep seek chat is has is also able to write terrific
+
+code as well.
+
+So we'll we'll stick with that model and that will be our test engineer.
+
+Now it's time for us to go on to the tasks.
+
+So look it's a bit repetitive.
+
+We're going to let me get rid of the gunk.
+
+We're going to have a task for each agent.
+
+And it's funny.
+
+This is one of those times when it feels like OpenAI's agents SDK is sort of more straightforward that
+
+they don't have this extra indirection, this idea of a task being a separate first class object, because
+
+there's a lot of times that you will have this 1 to 1 mapping between a task and an agent.
+
+Obviously, crew has built this up because they really want you to think in terms of situations where
+
+you will have series of tasks that will be given to the same agent.
+
+And we did see that and at least one of our examples.
+
+But in this case, we are again going to have the case that there's going to be a task for each of our
+
+agents, and it gives us an opportunity to spell out very clearly what's required.
+
+So the description of the task is to take the high level requirements described and prepare a detailed
+
+design for the engineer.
+
+This is the design task that, of course, is going to be assigned to our engineering lead.
+
+And the output is a detailed design for the engineer.
+
+You'll notice that I make it important that it should only output the design in markdown format.
+
+Otherwise it just wants to start writing the code, which is not exactly what we want.
+
+And here we specify the the output as the module name underscore design.
+
+And it's worth noting that you can have these templated tags in the output file name as well.
+
+You can have it anywhere in this YAML, and it will get substituted in for the actual name of the the
+
+module that we're building here.
+
+So that is the design task.
+
+My next one cursor wants it to be called coding task.
+
+But when I wrote it I wrote code task.
+
+There we go.
+
+Uh, I'd like to be unpredictable.
+
+Uh, so the description is write a Python module that implements the design as described by the engineering
+
+lead in order to achieve the requirements.
+
+And then here I'm saying important output only the Python code without any markdown formatting or code
+
+block delimiters or backticks.
+
+And that's important because these models love to output markdown.
+
+And if you don't put that note in there, it's going to put that tick, tick, tick python at the top
+
+of the file, which means it won't be a valid Python file.
+
+And it just loves doing that.
+
+So unless you really highlight this is important, it's going to do it.
+
+And so that is the task.
+
+And we're saying context design task, which you remember is going to make sure that that information
+
+is made available to it.
+
+And generally speaking you can think of the tasks as being the user prompts and the agents as defining
+
+the system prompts, and that that's kind of how it all comes together.
+
+And this context is showing us what kind of information is going to be included in that prompt from
+
+others.
+
+Okay.
+
+So that is the code task.
+
+How about the front end task.
+
+So this is where the plot thickens.
+
+The front end has got to write a Gradio UI in a module App.py that demonstrates the given back end class.
+
+Assume there's only one user and keep the UI very simple indeed.
+
+Just a prototype or demo.
+
+Here are the requirements.
+
+And so yeah, we keep it.
+
+Keep it nice and simple.
+
+Maybe I'm going to take out the very simple indeed.
+
+Let's just say keep the UI simple and keep the UI clean.
+
+Let's leave it at that.
+
+So, um, important.
+
+Only output the raw Python code again.
+
+The agent is the front end engineer agent, obviously.
+
+And of course, for its context, it needs to get the output from the code task because it's going to
+
+write a user interface, which is going to directly use what the code task has written.
+
+So that's going to be very interesting to see how how it's able to keep that context so well that it's
+
+actually able to do this.
+
+And then cursor is correct that the last one is indeed called test task, but it's got a little bit
+
+more detail than cursor was suggesting.
+
+Write unit tests for the given back end module and create a test in the same directory.
+
+And this is.
+
+Got more information one more time about outputting raw Python without clever tags.
+
+And of course it also depends on the code task.
+
+The unit tests are not going to test the user interface, it's going to test the code.
+
+And that will be the output file.
+
+And that is it for our tasks our 1 to 1 again between the task and the agent.
+
+
+*** Collaborative AI Agent Development for a Stock Trading Framework
+
+Okay.
+
+Okay.
+
+It's time for us to go to the crew module as well, you know?
+
+You know that that's the next step.
+
+And of course, you also know that I like to get rid of all of the gunk.
+
+No more gunk for us, but we'll keep in, of course, the hooking up to the YAML files.
+
+Let's get rid of everything else from here, and we will do our work to define the agents.
+
+So agents, the first agent is called the engineering lead.
+
+And good old cursor is giving us some good suggestions here, but not perfect because we don't need
+
+the engineering lead to be able to execute code.
+
+That's not its idea, it's just meant to be designing stuff.
+
+All right.
+
+But now the back end engineer.
+
+So thank you cursor for that.
+
+But you have missed this time what we really need here.
+
+So we do indeed want it to be able to have code execution.
+
+We want the code execution to be safe in a Docker container.
+
+Absolutely.
+
+The, uh, max execution time.
+
+We probably want to give it a bit more.
+
+Well, not not that long.
+
+That's rather too long.
+
+Let's give it a few minutes to work on this.
+
+Why not?
+
+And then Max retries.
+
+We'll give it five times before we are upset.
+
+That seems pretty good.
+
+Okay.
+
+The front end engineer.
+
+Oops.
+
+Need to remember my decorator.
+
+The the front end engineer.
+
+Let's have a look.
+
+So actually we're going to have it right front end.
+
+But we're not going to have it try and execute because that would bring up a gradio UI in the Docker
+
+container.
+
+That'd be a whole different, different ball game.
+
+So we're not going to do that.
+
+But we are going to have it do its creation.
+
+And now we just have the test engineer.
+
+So thank you cursor.
+
+And that seems like a good enough start.
+
+But the test engineer we absolutely want the test engineer to not only write the unit tests but then
+
+to run the unit tests.
+
+But it probably doesn't need.
+
+Well we'll give it we'll give it a couple of minutes to do that, and we'll give it five retries as
+
+well.
+
+That seems fine.
+
+Okay, those are our agents.
+
+Next, it's time for us to define our tasks.
+
+And this is going to start to get very complicated.
+
+The design task is just going to look like that.
+
+And I bet curse is going to know everything else.
+
+That's all we want for the code task now.
+
+And, uh, let's see if it can help us more.
+
+That's probably great for the front end task.
+
+And, uh, the test task.
+
+Is it going to help us with that?
+
+Yes it is.
+
+It's got a strangely indented, but no, it's brought it back.
+
+That's nice.
+
+And I think that's it for our tasks.
+
+I don't think there's anything missing here.
+
+Perfect.
+
+All right.
+
+Thank you.
+
+Cursor.
+
+Those are indeed our tasks.
+
+It's time though.
+
+It's time for our crew.
+
+Let's see if, uh, cursor can do this.
+
+Oh, no no, no, that's all.
+
+All a disaster.
+
+This is, uh, a moment to, uh, definitely mention that you do have to be mindful of this.
+
+The whole vibe coding thing.
+
+As I said before, it is common for Llms to generate too much code and to to just put stuff in there.
+
+And often people send me problems they've got and I can see that they've used an LLM to generate lots
+
+of code, because it will tend to err on the side of more.
+
+Of course, in this situation, we don't need to list out all of the agents like this.
+
+We can just say the agents are self dot agents.
+
+That's the why we decorated them.
+
+And we can say that the tasks is self dot tasks.
+
+And we also need to mention that the process is process sequential and verbose is true.
+
+And that really is it.
+
+But we would normally call this def crew like that.
+
+And I think we've got it.
+
+Okay well you know what's left.
+
+We have to do our run function and we will come to that right now.
+
+Okay.
+
+This is the usual main full of stuff.
+
+Gonna delete all of that.
+
+Going to delete all of this stuff here and leave us with something very simple.
+
+So let's have a think about this, this run.
+
+So, so first of all, we know that the what we've got here is we've got requirements are going to be
+
+let's let's just give ourselves a variable that we'll have we'll have a variable requirements okay.
+
+Module name was one of them.
+
+And we'll have that be a variable module name.
+
+And class name is going to be a variable class name.
+
+Isn't it great the way again cursor just guesses since we had that before that.
+
+That's going to be our thing.
+
+And now engineering team.
+
+That's because that the the function, the method that we decorated with, with the crew is indeed called
+
+crew kickoff with our inputs.
+
+Okay.
+
+So all that remains now is for us to actually come up with the assignment.
+
+And I have produced an assignment which I wish to show you now and which I think you may find rather
+
+interesting.
+
+So here is the coding challenge that we have for our team of agents.
+
+Let me tell you about this challenge.
+
+And then I'm going to tell you why.
+
+This is an interesting challenge.
+
+So the requirements we would like a simple account management system for a trading simulation platform.
+
+The system should allow users to create an account, deposit funds and withdraw funds.
+
+The system should allow users to record that they've bought or sold shares and providing a quantity.
+
+It should be able to calculate the total value of the user's portfolio and the profit or loss from the
+
+initial deposit.
+
+Users should be able.
+
+The system should be able to report the holdings of a user at any time, and the PNL at any time.
+
+And it should be able to list the transactions that the user has made.
+
+And it should prevent the user from withdrawing funds that would leave them with a negative balance,
+
+or buying shares that they can't afford, or selling shares that they don't possess.
+
+And I'm telling it, the system has access to a function get share price, which returns the current
+
+price of a share, and includes an implementation that returns a fixed price for three shares there.
+
+So that should be built into this code.
+
+So that's the challenge.
+
+It's like to build a kind of framework for simulating trading activity, which you know that's a fair
+
+bit of work to do that properly.
+
+That's that's not going to be easy.
+
+And you may wonder why why this particular challenge?
+
+Well, here's the thing.
+
+In the last week of our course, we are going to try to build agent traders.
+
+We're going to be using back to OpenAI agents SDK.
+
+And we're going to be using MCP.
+
+It's going to be really cool.
+
+And the idea is going to be, can we build like a set of traders of agents that are able to monitor
+
+financial markets, look at actual live real time prices and make trading decisions?
+
+But for this to work, we're going to want to have a kind of framework that they can make trades in
+
+and that a framework that will keep track of portfolios and so on.
+
+And there are some frameworks that you can get off the shelf, but they're very heavy weights because
+
+they're sort of big financial markets, backtesting frameworks.
+
+There isn't something that I could find easily that's just a lightweight account management stock portfolio
+
+management framework.
+
+And so I thought, why don't we get AI to build it for us?
+
+And what could be better than having our own crew, our own engineering team, take on this challenge
+
+and try and build out this, this whole framework for us.
+
+So that's why this is a two for one.
+
+Not only are we doing this week's project, putting together a crew of software engineers and a test
+
+engineer and so on, but also this is going to hopefully provide us with a framework that will then
+
+be able to reuse, give us a head start in week six, so we don't have to build our own and do a whole
+
+ton of coding.
+
+So it's actually going to save us some time as well to boot.
+
+Well, with that introduction, I think it's time to try and run this thing.
+
+
+*** Building a Trading Application Using GPT-4o & Claude
+
+Ah, not so fast, you say.
+
+You notice that I'm missing the setting?
+
+The module name and the class name, which we also have to do.
+
+There we go.
+
+Module name is accounts.py and the class name is account.
+
+And actually that wasn't the only mistake also in task's YAML.
+
+I had some some missing.
+
+I had some stray tabs going on that some of these things weren't formatted properly.
+
+And I'll tell you, the reason I found that out is because I tried to run this and it failed.
+
+The error message I got was was quite obscure.
+
+It was like some long stack trace and it was not immediately obvious what was wrong.
+
+And I think, you know, I had to go through quite carefully and look for problems.
+
+And I sort of had a clue about the kind of thing I was looking for.
+
+But I can imagine if you're new to to using crew, then that could be quite a painful experience because
+
+there's not many clues given to where to go.
+
+And I really think that that is the kind of that's the deal that you make signing up for a framework
+
+like this, you get a lot out of the box, you get a lot of head start.
+
+Think of the memory stuff that we did last time and the whole way that this this fits together and the
+
+code execution stuff.
+
+I mean, it's amazing, but what you you get are that you are trading off is the fact that some stuff
+
+is is hidden from you.
+
+And when things go wrong, it can be harder to debug and figure out what's actually happening behind
+
+the scenes.
+
+But anyway, with all of that, it should be time now for us to actually give this a try.
+
+So we go into our directory, we go into engineering team and we get ready to run.
+
+Crew I run.
+
+Okay, here we go.
+
+And it's off.
+
+Thinking okay, the engineering lead is starting off the engineering lead.
+
+Of course that is GPT four zero.
+
+The way I have it set up, you may have picked a different model.
+
+You may even be trying with a llama.
+
+Now, I will say that if you are trying it with a llama, if you're looking for the free service, I
+
+do imagine that this will stretch llama to the max.
+
+This is going to be very, very hard challenge and depending on which model you pick underneath a llama,
+
+you may have limited success with this.
+
+This may be a case of where you have to watch what I'm doing here, and I'm saving the results in example
+
+output folder so that you can have that to hand.
+
+And you know, this might give you something to watch and learn from rather than running it yourself.
+
+But if you want to try it with GPT four and mini, that should work just fine.
+
+Anyway, we can see that it's done the design.
+
+It's now in the hands of the Python engineer, and I know that this can now take a couple of minutes.
+
+In fact, I think last time it took about five minutes to run all the way through.
+
+And that wasn't with deep seek.
+
+And deep seek can be a bit slower.
+
+So we'll see what happens.
+
+I will be right back in a minute.
+
+Okay.
+
+It just finished.
+
+It's exciting.
+
+I guess it did take about five minutes I think.
+
+Let's have a look at what was produced in the output folder.
+
+So I guess well there's a lot of files there.
+
+That's a good start.
+
+Let's start with the design document.
+
+It is indeed in markdown.
+
+It's uh, let's get rid of this terminal.
+
+It's got certainly like a design written out there and it's got like method signatures and things.
+
+That seems great.
+
+And now the big guy accounts dot pi.
+
+Okay, so it's got the get share price dummy at the top, which is what we wanted to to return a share
+
+price for Apple, Tesla and Google as example to to seed it.
+
+Okay.
+
+Class account.
+
+That's good.
+
+And it's got the right kinds of, uh, setups deposit accounts, withdraw accounts with comments with
+
+docstrings.
+
+Okay.
+
+That's that looks good from eyeballing.
+
+I'm seeing good looking stuff.
+
+Obviously we'd expect to see, uh, price times quantity.
+
+And then, uh, I see they, they're going to, uh, return false or return true depending on whether
+
+it was successful or not.
+
+That's interesting.
+
+Okay.
+
+And yeah, this all looks pretty comprehensive, doesn't it.
+
+Calculate profit or loss.
+
+Get the holdings takes a copy.
+
+That's that's an that's a pro thing to have done.
+
+I wouldn't have even thought of that if I was doing it myself.
+
+That of course is the right thing to do.
+
+Okay.
+
+Very nice.
+
+This looks very comprehensive.
+
+This looks like the Kobe we're looking for.
+
+Let's look at the test accounts.
+
+Sure.
+
+I mean, these are the kinds of tests you'd expect plenty of of assertions in here.
+
+That's great.
+
+And then that's the right kind of scaffolding around a unit test.
+
+And there is an API.
+
+But we're not going to look at that App.py, because we're going to look at it in a whole different
+
+way when I'm back.
+
+Let's, uh, let's try this.
+
+Okay.
+
+So I've gone into a terminal now as we try out the code written by our engineering team, by our front
+
+end developer, we're going to go into the folder called output.
+
+Here we are.
+
+Now I imagine that we're going to need to install gradio.
+
+I imagine if we just do app.py it's going to have an import failure.
+
+Let's try this.
+
+You've run App.py which you remember.
+
+You've run is the equivalent of Python when you're using UV environment.
+
+Let me see.
+
+No module named Gradio.
+
+Okay, so I have to do UV add gradio.
+
+And it's now added.
+
+And now we try this again.
+
+You've run App.py.
+
+Okay.
+
+It's thinking it's doing its stuff.
+
+Thinking thinking hasn't crashed.
+
+It's loading the various gradio dependencies right now, I believe.
+
+Okay.
+
+So it's it started a radio app.
+
+This is kind of crazy.
+
+Follow the link.
+
+Okay.
+
+Here we go.
+
+Here is a user interface.
+
+Okay.
+
+So first of all the first thing I'll notice this is you're getting like a raw reaction video here.
+
+I'm like astonished.
+
+You can see that it's done an audio out with with these tabs.
+
+Account management trading and reports.
+
+That's cool.
+
+So create an account.
+
+I get to give it a user ID, so I guess I'll call it ad initial deposit.
+
+We'll put that in I'll press create account.
+
+Account created for ad with initial deposit of 10,000.
+
+And there we go.
+
+Holdings.
+
+No holdings.
+
+All right.
+
+Fine.
+
+Now we go over to.
+
+I guess I can withdraw and, uh, and add.
+
+That's cool.
+
+I'll go to trading.
+
+We'll do symbol apple quantity one, buy shares.
+
+And here we go.
+
+Successfully bought one share of Apple at.
+
+Let's zoom out a bit.
+
+Let's see if we can.
+
+There we go.
+
+Zoom out again at that much.
+
+So the user is editor.
+
+That's now my cash balance that's come down.
+
+The portfolio value is of course the full amount because I've I've spent some money but I've bought
+
+equivalent Apple shares.
+
+That's calculating that.
+
+Right.
+
+And there's the holdings one share at 150 each.
+
+That's great.
+
+Let's go over to reports.
+
+Portfolio value is uh 10,000.
+
+Profit loss zero.
+
+Current holdings.
+
+Is there transaction history uh deposit and buy shares.
+
+This is great.
+
+This is so cool.
+
+I can't believe this.
+
+This is this isn't a simple user interface.
+
+This is a really good user interface.
+
+Look at the way things are organized into groups and are, like, nicely laid out.
+
+I'm kind of surprised about this because actually, in the past I've used GPT four or mini, and it's
+
+not looked as good as this.
+
+It's worked for sure, but this is a sharp user interface with with tabs, with sections organized quite
+
+nicely.
+
+And, uh, I guess we better let's try selling a share of Tesla that we don't have.
+
+Quantity one sell shares.
+
+Error.
+
+Insufficient shares to sell.
+
+Okay, we get an error message.
+
+Now let's try selling an Apple share Sell.
+
+Share.
+
+Successfully sold one share of Apple.
+
+And now we have no holdings.
+
+And if we go and look at our transactions, hopefully we'll see that we both bought and sold.
+
+Transaction history.
+
+Buy one share of Apple.
+
+Sell one share of Apple.
+
+Well, I got to tell you, this is astonishing.
+
+I'm, uh.
+
+There's there's this.
+
+This isn't a fake.
+
+I haven't run this in advance to to see this before.
+
+You're getting my raw reaction.
+
+And it's definitely surpassing my expectations in terms of this being a nice user interface.
+
+Like, if I had built this, I would be quite pleased with it.
+
+I'm, uh, frankly, I'm astonished.
+
+So that's a great conclusion.
+
+I will be sure to make sure I'll put some examples in example outputs.
+
+I'll try and put one with with mini so you can see a more raw user interface and then something like
+
+this.
+
+And uh yeah it's really amazing to see.
+
+So a collaboration between GPT four and Claude 37 and deep seek to build this platform with, frankly,
+
+a really impressive user interface.
+
+
+
+** From Single Modules to Complete Systems: Advanced CrewAI Techniques
+
+
+So I am genuinely blown away by how well that did.
+
+And and you know, again, how easy it was for us to get to that point of having these different, this
+
+crew of different agents building that product and the fact that that user interface just worked right
+
+away, like it just came up and it ran and, and it looked so great and that the functionality behind
+
+it there was like a front end and back end and it all held together and did its thing.
+
+So I hope that you're going through the same as what I'm going through, somewhat some disbelief and
+
+I hope you're seeing similar results.
+
+I've put that particular example in something called example Output new.
+
+And there's also you'll see a couple of other examples in there.
+
+If you you want to try out the ones that I generated.
+
+But you should try it yourself.
+
+Play with different models and experiment.
+
+And that's not all you should experiment with.
+
+Now this this week has some important projects for you.
+
+This this is where you really learn.
+
+You learn by building stuff yourself, by coming in.
+
+Take an example like this and just build it step by step.
+
+Take it a piece at a time.
+
+Gradually add to it.
+
+So the first way you can add to it, the easy way you can add to it is to have your team grow.
+
+Your team is hiring.
+
+Add in some more.
+
+The role that I call test engineer wasn't really a test engineer because this was some something that
+
+wrote test cases, but you could actually have a test engineer that's responsible for going through
+
+maybe writing a test plan and then executing the test plan.
+
+You could add a business analyst that fleshes out the requirements.
+
+You could you could have some more detail.
+
+You could have an even richer user interface.
+
+Honestly, the sky's the limit with this.
+
+We're just scratching the surface.
+
+We only had four people in this team, and and you can just keep on and on going and try different models
+
+and see where it takes you.
+
+But that's the relatively easy change there is then a harder change for you, which is the real challenge
+
+of the week.
+
+And here it is.
+
+So the thing is that this was all very well, but ultimately it only produced one Python module for
+
+the back end code.
+
+And then of course front end module to go with it and a test module to go with that.
+
+But it was all still very much on rails in that there was just the one, the one module that was already
+
+fixed at the beginning.
+
+Now, it would be a lot better if your team could build a whole system piece by piece, working on the
+
+different classes to build the different modules and then assembling them together.
+
+But therein lies a problem, because you would need to have a workflow that's a little bit more interactive
+
+in that potentially you'd need to have different classes being created by different agents.
+
+Now there's a few ways to do this.
+
+One way is, of course, you'll want to use structured outputs as a way to get more clarity from the
+
+engineering lead about who's doing what.
+
+Use structured outputs as a way to construct the different modules that need to be written.
+
+But ultimately, you're probably going to want to call an engineer a certain dynamic number of times.
+
+That will depend on how many modules the engineering lead wants to create.
+
+So it's not like you're fixed when you write the code that you know exactly how many tasks will be run
+
+now.
+
+Crew allows you to do that and it makes it quite easy for you.
+
+You can create a task object at runtime while it's actually running.
+
+You can have a task object, and one of the the fields you can have is have a callback.
+
+And actually the callbacks with the agent and the callback can make it create another task.
+
+So you can use this approach to build a more dynamic system where the results of completing one thing
+
+causes another thing to happen.
+
+And so you can assign tasks for each of the modules that need to be built.
+
+And that is the challenge for you.
+
+Add structured outputs and then add the dynamic creation of tasks so that an entire set of modules can
+
+be created, and you can build a whole system and then apply that.
+
+And I don't necessarily have a system to be built.
+
+You should apply that yourself to your day job.
+
+Think of a system that you would like, whether it's building a website, whether it's building an e-commerce
+
+platform, whether it's building something to organize medical records, whatever line of business,
+
+whatever profession you work in, think about the challenge that you could set your crew and have it
+
+be something which which is dynamic and which could involve building an entire system with several modules.
+
+And once you've done that, of course, or while you're doing it, you must share your progress.
+
+This will be hugely something that that will generate excitement on LinkedIn.
+
+So post updates there.
+
+Tag me so that I can weigh in and get it more visibility.
+
+These are projects that really count, and it really helps you to build and solidify your expertise
+
+and demonstrate it to others.
+
+Actually, to correct myself there, I was right the first time.
+
+If you want to to work with callbacks, then the way you do it is at the task level, not the agent
+
+level.
+
+And I'm looking right now in the crew docs.
+
+At docs.
+
+Or just just click on tasks right there.
+
+And it's worth looking through this because there's lots of lots of interesting information here that
+
+you might want to try out.
+
+So the callback you can specify when you create a task, the in the code you would say callback equals.
+
+And then the name of a function that should be called back.
+
+And that is where you could potentially create a new task.
+
+So it talks generally about the fact that you can create tasks from from YAML as we know well.
+
+Or you can also do it just by having the full code version of it too.
+
+As you can imagine, you can just pass in the description the expected output instead of specifying
+
+the YAML config.
+
+Then there's a lot of interesting stuff here that's worth taking a quick peek at.
+
+There's stuff we know about, but then there's also task guardrails, a analogous concept to what we
+
+looked at with OpenAI agents SDK.
+
+Using guardrails a way to validate and transform outputs before they're passed to the next task.
+
+It looks like it doesn't have the same constraint that OpenAI has that it needs to be input of the very
+
+first one, or output of the very last one.
+
+You can implement this at any task, it appears.
+
+And then there's stuff about how to handle errors with with those guardrails and then structured outputs.
+
+We know about that.
+
+That is of course using the output pedantic or output JSON is another way of doing it.
+
+And now integrating tools with tasks is of course something that we know about.
+
+And creating a task with tools is is listed out here, which is.
+
+Yes, sorry, that is what we're used to.
+
+Again, that is using a tool like the surfer dev tool that we already used, actually, right in there
+
+referring to other tasks.
+
+The output is automatically related to the next one, but you can define the context that should be
+
+used.
+
+And and we we did that.
+
+There's some stuff on asynchronous execution.
+
+You know I remember I said last time I think that we would be using async every single week, and we
+
+haven't actually used async this week.
+
+We're going to it's going to make a comeback, don't worry.
+
+But if you miss it then you can read up around asynchronous execution of your crew tasks here.
+
+This then is the callback mechanism.
+
+This is where you can implement a callback function.
+
+So if you had referred to it like so, then your function will get called subsequently when the task
+
+completes.
+
+And then there's a more interesting stuff here.
+
+And uh, more now on the, uh, the guardrails as well.
+
+And there we go.
+
+So I, I do encourage you to take a read through this, read a bit more about things like guardrails,
+
+which are interesting, and also about using callbacks.
+
+And some of this may be helpful when you look to build this more advanced flow.
+
+When completing one task can trigger setting dynamically, creating multiple other tasks.
+
+And very sadly, that brings our crew week to an end.
+
+It's the end of week three, the end of crew week.
+
+We've done some great things, so we built some fun projects.
+
+The stock picker was was really interesting.
+
+You haven't used that for investment decisions, I hope.
+
+And the engineering team was just mind blowing.
+
+Wow.
+
+Um, so I really hope you enjoyed it.
+
+I hope you have the same feeling as me about crew.
+
+I really love crew.
+
+I prefer open agents SDK, but but I love crew too, and I'm excited to now move to a heavier weight
+
+framework in the form of Landgraph for week four.
+
+ 
