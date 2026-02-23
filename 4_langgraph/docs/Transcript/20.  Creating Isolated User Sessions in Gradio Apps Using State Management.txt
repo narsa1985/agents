@@ -1,0 +1,193 @@
+Refer : D:\MyProjects\agents\4_langgraph\app.py
+
+Okay, here we are looking at app dot Pi, which is our Gradio app.
+
+We only have two imports.
+
+Import Gradio and from sidekick.
+
+Import sidekick the class.
+
+And so uh, yeah, the idea is so.
+
+So this is the way that you build a Gradio app.
+
+Uh, you have, um, this blocks, um, and then you can create your fields.
+
+And as I said, it's not this isn't a gradio class.
+
+So I'm not going to go into too much detail.
+
+I want to give you some intuition that you create fields like a chatbot field, which is where we have
+
+our sidekick, we have our message and our success criteria, and we have a go button and a reset button,
+
+um, here.
+
+And, uh, yeah, the thing I wanted to mention, the way that Gradio works is that you have a bunch
+
+of these callbacks that where you have things like, um, you have go button click, and that means
+
+if you click the go button, it will call this function, and it will call it with these inputs.
+
+And it will hook up these outputs.
+
+And when you get used to gradio, you see it all starts to click and you see how you can just simply
+
+think of everything in terms of these callbacks.
+
+And everything here is sort of generated and runs in the front end in a browser, except these callbacks
+
+are called back to your actual server that's running right here.
+
+And so that's how the whole thing works.
+
+Now there is a callback called load, which is one that is called at the beginning when a new screen
+
+is brought up and loaded.
+
+And that's an important one for us here because that is when we're going to call a callback called setup,
+
+which is going to return something called sidekiq.
+
+And that is a something that we're storing in the state of this gradio.
+
+So this is something the sidekick.
+
+It's a state.
+
+It means I'm going to set it through various callbacks, and I'm going to provide it in callbacks so
+
+that that's going to be associated with a particular user of this screen.
+
+Um, and I've also registered this delete callback free resources.
+
+And that's how I'm hoping to clean up this playwright and chromium browser that's running associated
+
+with this resource.
+
+But because we've done it this way, we've done it quite carefully with Gradio, which I've I've not
+
+been careful with some of my prior Gradio projects.
+
+Also in the LM engineering course, no one's called me on this yet.
+
+But but in the big thing we do at the end, I don't properly use gradio state, which means that if
+
+you brought up multiple screens or if you had different users trying to use your platform, and it is
+
+only intended to be used by the individual themselves, but you could get in trouble because everyone
+
+will be sharing the same like like variables.
+
+So this makes sure that different people using the screen, if you were to to supply this as an app,
+
+they would each have their own separate session with their own variables.
+
+So in this case we initialize it by calling UI load.
+
+So if we go to the load callback sorry not not the it's called setup.
+
+It's the callback.
+
+Here it is uh setup.
+
+And what that does is it instantiates it creates a new instance of sidekick.
+
+And remember that that sets up it just has a bunch of of things in the init to get things ready.
+
+The big work is done in sidekick setup, the async method that we await right here.
+
+So that now populates all of the things in sidekick, including building the graph.
+
+So this is where all of the graph gets built.
+
+The nodes are put together.
+
+Everything happens here.
+
+These are all of the steps, the five steps that happen before the graph is invoked, before any super
+
+step.
+
+And then this callback returns sidekick.
+
+And that means that sidekick is hooked up to this, also called sidekick.
+
+This variable also because this is the state object associated with the session.
+
+So that means that the sidekick that we created right here gets associated whenever you load a user
+
+interface.
+
+That user interface is associated with this particular sidekick Instance.
+
+Okay.
+
+Hope that made some sense.
+
+It doesn't need to make you just just get some intuition for it and understand the basic plumbing and
+
+that will that will be all that you need for now.
+
+Okay.
+
+And then I just wanted to mention the big thing here is that there's a go button, and that go button
+
+says go on it.
+
+And if we look at go button.click we'll see what that does.
+
+It calls Processmessage, which we're just going to look at in a second.
+
+That is a callback.
+
+And it calls that with the message that the user has just entered, which comes from from here, uh,
+
+with the success criteria which the user has entered, and with all of the chat history and what comes
+
+back needs to go to the chat history and to the sidekick object to make sure that we keep that updated
+
+in state.
+
+Uh, and so, uh, and I actually don't think you need to do this, but I feel like it's, it's, uh,
+
+more consistent to do it that way to, to repopulate that in the state.
+
+But if you're a gradio wiz, you know what's going on here, then?
+
+Probably like me, you know that this is probably not required.
+
+Um.
+
+But anyway, I digress.
+
+This this is the process message.
+
+Uh, callback.
+
+It's perfectly straightforward.
+
+Uh, it takes everything that I just mentioned that's hooked up to to Gradio, and it simply calls the
+
+run super step method, a coroutine that we looked at just a second ago on our sidekick object.
+
+The thing that we that we instantiated so it calls run super step.
+
+It passes in the message, the success criteria and the history.
+
+And that is going to run a super step of our graph.
+
+And then it's going to return the results back to the user.
+
+And that that is the tour of the app.
+
+It's the same code that we had in Gradio.
+
+It's just sorry in the notebook, same code we had in the notebook, just with a bunch more tools,
+
+a bit of a built out prompting there to handle some some troubles that I had.
+
+And you will have to do a lot more, I'm sure.
+
+And with that, it's time for us to give this thing a drive.

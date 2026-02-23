@@ -1,0 +1,139 @@
+Refer : D:\MyProjects\agents\4_langgraph\1_lab1.ipynb
+
+Just take the obvious.
+
+The reason I showed you the silly example was because I wanted to show that nodes don't need to have
+
+calls to llms, and they still do what they're meant to do.
+
+But now we are going to add an LLM.
+
+So we start by defining the state.
+
+We create a graph builder with that state.
+
+And now we create an LLM a real LLM using chat OpenAI.
+
+So chat OpenAI is a construct from Lang Chain the sibling to Landgraf.
+
+Uh and that's what we'll be using to connect with our LLM.
+
+And now you don't need to use lang chains llms for this.
+
+You can use any Llms.
+
+You could directly call the LLM yourself.
+
+You could also, uh, use maybe OpenAI agents SDK.
+
+But it does make things a bit simpler sometimes if you use Lang chain and most of the community examples
+
+of course go from Landgraf to Lang chain.
+
+So it's it's easy to do it that way.
+
+And that's what we'll do for here.
+
+So we're going to create a new node called chatbot node.
+
+It takes an old state and it returns a new state.
+
+And what does it do.
+
+Well it takes the the LM and it invokes on that LM.
+
+So it's again it's the Lang chain.
+
+Landgraf word invoke uh, passing in the messages from old state.
+
+So old state has a messages field and that is what we pass in.
+
+And then for the new state, it creates a new state object which contains within it as in its messages
+
+field, it contains the response.
+
+And we return the new state.
+
+And we add that node called chatbot, uh, into our graph builder.
+
+Done.
+
+Now we'll add some edges from start to chatbot from chatbot to end done.
+
+And now we will compile our graph.
+
+Step five and we'll look at the graph.
+
+And sure enough it goes start to chatbot to end.
+
+And then we put it all together in a simple gradio chat function.
+
+It takes an initial state, which is a state object set up with these messages like so.
+
+We then call graph dot invoke to actually call our graph.
+
+We print the result and we will also show the results back in Gradio.
+
+So here it is.
+
+And I can say hi there.
+
+And it's actually calling OpenAI.
+
+Now it's not using our silly adjectives.
+
+And you'll see down here that there's the user message and the response coming in these objects, this
+
+human message object that is coming back.
+
+Sorry, that human message is my.
+
+Hi there.
+
+I mean, there should be an AI message.
+
+There it is.
+
+There is the AI message, which is the response actually coming from OpenAI.
+
+But one thing that's worth noting is that if I continue this conversation every time we are invoking
+
+this graph, and you will see what you have probably already suspected, which is that we're not actually
+
+keeping track of any history here.
+
+Let's see that in action.
+
+Uh, if I, uh, say, um.
+
+My name's Ed.
+
+Nice to meet you, Ed.
+
+How can I assist you today?
+
+What's my name?
+
+I'm sorry, but I don't have access to your personal data.
+
+So there's a sign that it's not able to keep context.
+
+And you can see it yourself if you read the information that's going to and fro.
+
+So because we've just got this simple graph that we were invoking each time, there's nothing particularly
+
+interesting happening here.
+
+And the state uh, is just, just contains that that uh, doesn't contain the history or anything.
+
+So, uh, that's one of the things that we clearly need to address.
+
+And the good news is that we will indeed address it.
+
+But the bad news is not until tomorrow.
+
+But we'll also address things like tools, our old favorite, along with a couple of other things.
+
+So, uh, look forward to it.
+
+I'll see you then.

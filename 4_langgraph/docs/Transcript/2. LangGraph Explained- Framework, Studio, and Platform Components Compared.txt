@@ -1,0 +1,167 @@
+So there's one more thing to mention.
+
+One more way in which it's just slightly more complicated.
+
+And that is that Landgraf itself is, in fact three different things, as I alluded to this already.
+
+But Landgraf is in fact Landgraf itself, which is also thought of as the Landgraf framework.
+
+It's a user interface tool called Landgraf Studio, which is one of these kinds of ways that you can
+
+hook things up visually.
+
+So like a visual builder.
+
+And it's something called Landgraf platform, which is the thing that they're sort of promoting on their
+
+website, as if that is Landgraf, uh, Landgraf platform, which is their, um, hosted solution for
+
+deploying and running your agents at scale.
+
+So, Landgraf, which is the framework which is analogous to Cray's framework, Landgraf studio, I
+
+think in Korea it was also called Korea Studio, right?
+
+I think so.
+
+And then Landgraf platform is analogous to CRI enterprise.
+
+And so these are the three offerings.
+
+And I mean, I think to me, I would make the same point that I made with crew, which is that what
+
+what perhaps part of what's going on here is, of course, Landgraf is looking for ways to commercialize
+
+and to monetize their offerings.
+
+And so looking for the enterprise play, the Landgraf platform is about deploying and running your Landgraf
+
+your graphs in their environment, uh, taking advantage of the fact that they've they've got hooks
+
+into everything that they've built.
+
+So I'm sure that if you have built all of your software using Landgraf, then it will be very convenient
+
+to use Landgraf platform.
+
+But I suspect that's what's going on, and I imagine that's why it is sort of promoted and framed so
+
+heavily on their site, as if Landgraf and Landgraf platform are the same thing.
+
+Uh, it's probably because this is the core commercial idea, uh, for for Lange chain and building
+
+this out.
+
+But we are going to be focused, of course, uh, as you can imagine on Landgraf, the framework, that
+
+part of it, that's what we're building to.
+
+We're going to be building our own.
+
+And we'll also be using Lange Smith as well to see what's going on.
+
+Uh, that's going to be interesting for us too.
+
+Now, at this point, I also wanted to do something I wanted to show you the blog post about building
+
+effective agents on Anthropic's website that I mentioned way back in week one, when we were looking
+
+at design patterns.
+
+But I think it's interesting and relevant now because it does show Anthropic's sort of positioning on
+
+this, and it's useful for you to keep this in mind when you think about the difference between what
+
+we're going to do today and what we're going to be doing in week six.
+
+So if we switch to building effective agents, then this this is the blog post you'll find on their
+
+website.
+
+And it's a brilliantly written post.
+
+I've got to tell you, it's really clear it contains within it the different design patterns that I
+
+mentioned.
+
+I hope I think I mentioned that I took the anthropic design patterns right from here.
+
+I thought they're so clear, so, so well explained.
+
+Um, and in addition to that, it has some discussion about using abstraction layers.
+
+And that's really what I wanted to show you here.
+
+So the, the, uh, um, it's says when and how to use frameworks.
+
+So they say there are many frameworks that make agentic systems easier to implement, including Landgraaf
+
+from Lange chain.
+
+They mention a few others that are not actually so popular, and not as far as I know, although I know
+
+of vellum the business.
+
+But but I don't think that that quite is as big as things like Cru and Autogen and now OpenAI agents
+
+SDK.
+
+But anyway, this is the point I wanted to make.
+
+These frameworks make it easy to get started by simplifying standard, low level tasks like calling
+
+llms, defining and parsing tools, and chaining calls together.
+
+However, they often create extra layers of abstraction and that can obscure the underlying prompts
+
+and responses, making them harder to debug.
+
+They can also make it tempting to add complexity when a simpler setup would suffice.
+
+You can see what Anthropic's getting at.
+
+You can imagine from their point of view, they've got an API.
+
+They've got something that is relatively simple.
+
+Memory can be handled with JSON objects.
+
+Llms can be hooked up simply by calling multiple times.
+
+And so for them, this this idea of building all of this abstraction around it, taking you further
+
+from actually working with the LM itself isn't necessarily something that resonates strongly.
+
+And so they conclude with we suggest that developers start by using LM APIs directly.
+
+Many patterns can be implemented in a few lines of code.
+
+If you do use a framework, ensure you understand the underlying code.
+
+Incorrect assumptions about what's under the hood are a common source of customer error.
+
+And by customer they mean us customers of anthropic.
+
+So there you go.
+
+I found this really interesting.
+
+It's obviously very clearly written and something that I'm very passionate about.
+
+It is an alternative, a different school of thought.
+
+It is, of course, somewhat, uh, not not in sync with the graph, uh, philosophy thesis of building
+
+this kind of structure.
+
+Uh, so it's interesting to keep that in mind.
+
+And of course, in week six, we're going to see what anthropic brings to the table in the form of MCP,
+
+which is a different way of thinking about it, a protocol, uh, for, for connecting things rather
+
+than building the actual glue itself.
+
+So I wanted to highlight that and give you that perspective, but it's not going to deter us from getting
+
+deep into Landgraaf right now.

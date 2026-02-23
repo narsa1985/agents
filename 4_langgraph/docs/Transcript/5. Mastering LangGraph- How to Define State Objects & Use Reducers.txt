@@ -1,0 +1,255 @@
+Refer : D:\MyProjects\agents\4_langgraph\1_lab1.ipynb
+
+And also we are coming now into week four Landgraf and into lab one.
+
+And it's not only welcome back to cursor, it's also welcome back to notebooks.
+
+You know I love these things I know the mixed mixed popularity.
+
+Uh with with with others.
+
+But but hopefully you'll put up with them for a bit.
+
+We'll use code as well this week too.
+
+Don't worry.
+
+So we're going to start by doing some imports as we get started.
+
+And then we also have some constants.
+
+Ignore these for now.
+
+We'll use them in a bit.
+
+They're silly.
+
+Uh and we're also going to have our favorite, uh, little thing here.
+
+And you may be wondering why we didn't have that during crew week.
+
+It was absent.
+
+And the reason is that crew just does that for you automatically.
+
+Crew uses the env file itself, and so you don't need to run it.
+
+Okay.
+
+Now I need to explain something called annotated.
+
+So hopefully you're somewhat familiar with things called type hints in Python, an optional feature
+
+that is often used in engineering.
+
+To give you an example, supposing that we have a Python function called shout that takes some text,
+
+and the job of shout is to print the text in uppercase.
+
+That seems fairly simple.
+
+And let's just shout hello like that.
+
+Hopefully no surprise.
+
+Hello in capitals comes up.
+
+Well, uh, the type hints is when you are clear to Python, uh, what is the type of variable that
+
+you're using at each point.
+
+So you can say that that text is a string by putting colon str.
+
+And you can put here that will return a string or it's not returning anything, it's returning none.
+
+But if we also have it, uh, if we leave it like this, oops.
+
+If we have it be returning a string, then it will be unhappy.
+
+But we would need to then also return text upper as well.
+
+And then it will run.
+
+So these are called type hints.
+
+And they are a useful way of specifying what's going on.
+
+There is a feature that you can use called annotated in which we could type annotated.
+
+String comma.
+
+And then we can put some message here.
+
+Uh, something to be shouted.
+
+Uh, and this is something I need to close the square brackets.
+
+This is just extra information.
+
+That's a sort of FYI that's included in here.
+
+Uh, Python doesn't make any use of this at all.
+
+But if we are going to provide this function to, to, to another platform or in some other context,
+
+someone might want to read how we've annotated it, and that might be useful for someone.
+
+So annotations can be used for this purpose of kind of tagging variables to have a purpose.
+
+So this should run without any change at all.
+
+That is completely ignored.
+
+Uh, and it's just just a useful way of adding some extra information in case, in case it matters to
+
+somebody else and it is going to matter to somebody else.
+
+Landgraf is going to want us to annotate, in order to tell it something.
+
+Let's come on to that.
+
+So I explain here again, you could have a variable like my favorite things that could be a list.
+
+And you could say that my favorite things, you could actually not just describe it as a list, but
+
+say that it is annotated.
+
+It's a list.
+
+And these are a few of mine I added as an annotation to my favorite things.
+
+Uh, so why do I tell you this?
+
+Well, it all comes back to these things called reducers.
+
+We are about to define our state object.
+
+And when we do so we're going to give it a few fields.
+
+And when we define those fields we have to give them a type.
+
+And when we give them a type, we don't just specify the type, but we use annotated to be able to specify
+
+a reducer.
+
+If Landgraf is expected to use a reducer, that is the technique use annotated to do that.
+
+Um, and that that is what we're going to do.
+
+And as it happens, Landgraf comes with with one out of the box that's very useful for us called Add
+
+Messages.
+
+Uh, and that is one that I just imported up here.
+
+So if you look up here, one of my imports was from Landgraaf.
+
+Message import add messages.
+
+So that is it's like a function.
+
+And it's a function that you can, you can annotate with.
+
+If you want to say, hey this is the reducer I'd like you to use.
+
+So to make this feel real let me just let's go ahead and define our state.
+
+So you remember step one in the in the puzzle is to define the state object.
+
+That is what we're doing here.
+
+We are going to have a state object.
+
+Now state objects.
+
+You can define them in many ways.
+
+They can in fact be any Python object that you want.
+
+It's most common to either have it be a Pydantic object that we met in the last week.
+
+Uh, it can be.
+
+Or we made it the last two weeks.
+
+Uh, it can be a pydantic object, meaning it's a subclass of base model.
+
+It can also be something called a typed dict, which is a particular type of, of dictionary in Python
+
+where you specify what the keys need to be.
+
+Uh, but but it can also be anything but it is quite common to use either pydantic objects or type dicts
+
+and we will use Pydantic, since that's something that we're familiar with.
+
+So we are going to have a state object defining the state of our system.
+
+And it only has one field and that's called messages.
+
+And that is going to store in it a list of messages.
+
+And these this list of messages is going to be passed around our graph.
+
+And over time it's going to build up as messages get added to it.
+
+And so we are going to say that it's it's something that's annotated.
+
+It is a list.
+
+So it consists of a list of things of messages.
+
+And we are going to then because we're annotating it, we can provide an annotation that's ignored by
+
+Python, but it can be used by Landgraf.
+
+And that annotation is where we get to specify the reducer, the function that will be called in order
+
+to combine one state with another.
+
+And we're going to use one out of the box called Add messages.
+
+It is a reducer that is used to add messages.
+
+And it's very simple.
+
+It's very vanilla.
+
+All it does is it assumes this is a list.
+
+And if you return something with with an and items in the list.
+
+It just combines it with everything else in the list before it concatenates these lists together.
+
+That's all it does.
+
+So hopefully that makes a bit of sense.
+
+Uh, if not, then you'll see it'll become clear as we use this exactly what's going on.
+
+And and why were the use of this and the reducer and how it's working.
+
+So step one we define the state object.
+
+Step two we start the graph builder.
+
+And that is just a matter of calling this thing called state graph.
+
+Instantiating a state graph passing in state.
+
+And one thing to to get your head around here is that what I'm passing in there.
+
+The thing I've just highlighted.
+
+It's not an object I'm not instantiating.
+
+I'm not I'm not creating a state and passing that in with with messages and so on.
+
+Now I'm passing in the class.
+
+I'm passing in the type of thing that represents our state.
+
+That is what I'm using to create my state graph.
+
+And this is beginning the graph building process.
+
+This is part of the five steps before we actually run our Agentic framework.

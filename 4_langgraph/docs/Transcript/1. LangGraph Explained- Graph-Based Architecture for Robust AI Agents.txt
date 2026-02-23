@@ -1,0 +1,289 @@
+It is Landgraph week as we really change things up, Landgraaf thinks about the universe differently.
+
+We're going to have a great old time, but it's going to require some different ways of thinking about
+
+things.
+
+But we're going to have fun.
+
+Uh, the project this week is particularly good.
+
+At the end of it, there's something really fun to show you with real business value that I've actually
+
+I've had business value from this already myself from from this project that we built.
+
+Um, but generally I want to say that this week, week four is actually quite a short week because I
+
+feel like we've got deep into OpenAI agents, SDK and crew, and we've done a lot that's covered familiar
+
+ground.
+
+And now the things that we do both actually with Landgraaf and with Autogen, it's going to have a lot
+
+in common.
+
+We're not going to need to go into quite the same amount of detail.
+
+So we'll be moving a bit more briskly through, but I'll be giving you plenty of the briefing and giving
+
+you the ability to go off and build your own projects with Landgraaf if it if it happens to tick the
+
+right boxes for you.
+
+All right, let's get into it.
+
+But before we even get into Landgraaf, I know what you're thinking.
+
+You're confused.
+
+You're confused about Langshan and Landgraaf and maybe also confused about Lange Smith, if you've heard
+
+of that.
+
+It is a trio of products offered by Lange Chain, and you may be unclear about how Landgraaf fits into
+
+it.
+
+And why aren't we going through Lange Chain?
+
+And it would be a great question, and it's one that I intend to clarify for you right now.
+
+Uh, and this this is the Lange chain ecosystem, and I could think of no better way of showing it than
+
+by taking little, little snapshots from their website.
+
+So Lange chain.
+
+Lange chain is where it began.
+
+It's been around for for many years now.
+
+And it was one of the earliest of the abstraction frameworks that that was there.
+
+And its initial kind of raison d'etre was that if you were building very bespoke integrations with different
+
+APIs.
+
+It was painful.
+
+And if you needed to change, say, from using GPT.
+
+To using Claude, you had to redo a lot of work.
+
+And so they had the idea of building abstractions.
+
+Then when it turned out that a lot of people were writing applications, which involved a call to an
+
+LLM, followed by another, followed by another, it sort of turned into this idea of chaining together
+
+your calls.
+
+Um, and, and, you know, Long Chain really took root and became something that's, that's quite advanced
+
+and supports things like rag uh, for people that do my engineering course, we use lang chain for a
+
+Rag implementation.
+
+Uh, it supports things like prompt templates, a sort of higher level construct built on top of, uh,
+
+prompting and supports memory in a very robust way, allowing you to to build memory that you keep in
+
+memory or that you keep in memory, keep it in Ram, or that you persist in a database.
+
+Uh, and it has various memory models.
+
+Uh, I guess not unlike the things that we saw from Crewe.
+
+Uh, but but there's a bit more, uh, stuff to the a few more abstractions and things to learn about.
+
+They also have their own declarative language, LCL as well.
+
+Uh, so there's, there's a, there's a lot of depth to Lang Chain, and it's really building a kind
+
+of engineering discipline around the, the, the art of working with llms and putting some scaffolding
+
+and some, some templates and some, uh, well, solidified code with things like good prompt practices
+
+around calling llms.
+
+And it's been extremely successful, uh, in that regard.
+
+It, it also it allows you to do things like abstract using tools.
+
+And so from that point of view, it does, in fact support building a genetic infrastructure.
+
+So you can use Lang chain and you can use lang chains workflows to build agent platforms.
+
+But it sort of predates the the recent explosion and excitement with, with agents.
+
+And so it's working in a more simplistic level.
+
+It's not their main agent platform offering.
+
+It's more of their glue code for building any application using LMS.
+
+Now, you probably heard me say that I have something of a love hate relationship with Long Chain.
+
+I definitely appreciate its power and the way that with very little code indeed, you can get up and
+
+running with with a lot of functionality like building a Rag pipeline in like four lines of code.
+
+Having said that, I do also see some drawbacks, and it's very similar to the drawbacks I was talking
+
+about with the more, more opinionated aspects of crew.
+
+It's that by signing up for a lot of the abstractions and a lot of the glue code that comes in the box
+
+with long chain, you're signing up for their way of doing things, and you have a bit less visibility
+
+into the actual prompts going on behind the scenes.
+
+And over time, the API's into LMS has become more and more similar.
+
+Anthropic is a little bit of an odd one out, but everybody else has really converged on OpenAI's endpoints
+
+and on their that structure.
+
+And so it's become extremely simple to interact directly with LMS.
+
+And handling memory is something that is also very simple to do yourself, because memory is really
+
+just the JSON blob of the conversations that you've had with the model.
+
+And so you can handle that JSON yourself.
+
+You can persist it as you want.
+
+You can combine memory in different ways.
+
+And so I see in some projects there's less need to sign up for a big ecosystem around, say persisting
+
+memory.
+
+But again there are pros and cons.
+
+There's definitely strong benefits to working with long chain.
+
+And with all of these significant engineering and problems that have already been solved that comes
+
+with it.
+
+Okay, so that's long chain and my mini rant.
+
+Thank you for putting up with that.
+
+Let's go on to talk about what is graph then.
+
+So on the website this is how it's positioned run at scale with graph platform.
+
+And as we'll talk about in a minute, Landgraf platform is actually one of the parts of Landgraaf,
+
+but Landgraaf itself is a bit bigger than that, so it's confusing on the website that they really push
+
+Landgraaf platform in this way.
+
+But let me tell you what I think Landgraaf is.
+
+Landgraaf is a separate offering from the company Lange chain from the same people it.
+
+It actually is independent from Lange chain.
+
+So whilst when you're working with Landgraaf, you can use Lange chain code to actually call LMS and
+
+to do various things with LMS you can do it's optional.
+
+You can really use any framework or you can just call LMS directly with Landgraaf.
+
+Landgraaf is all about a platform that focuses on stability, resiliency, and repeatability in worlds
+
+where you're solving problems that involve a lot of interconnected processes, like an agentic platform.
+
+So it's an abstraction layer that allows you to organize your thinking around a workflow of different
+
+activities that could have feedback loops.
+
+It could have times when humans need to get involved.
+
+It could have moments when you need to keep memory, and it allows you to organize all of that in a
+
+very repeatable and easily monitored and stable and scalable way.
+
+That's what Landgraf is, and the word graph gives some of it away that it's all built around graphs.
+
+Graphs being kind of tree structures of how to think about your workflow.
+
+So it imagines all workflows, anything that you might have going between agents in the form of a tree,
+
+a tree of nodes which are connected together, which represent different things that can happen at different
+
+points in your agentic workflow.
+
+And by thinking of it in this abstract way, and by putting sort of belts and braces around each point
+
+in this graph, they're able to bring stability and resiliency to a world that is a bit unpredictable
+
+and has has, you know, people have resiliency concerns about agentic AI.
+
+So that's really their approach.
+
+That's the problem they're trying to solve.
+
+And you can see if you if you read the detail there that they're saying you use this to design agent
+
+driven user experiences featuring things like human in the loop, multi-agent collaboration, conversation,
+
+history, memory, and what they call time travel, which is all about being able to checkpoint where
+
+you are in the process of being able to step backwards if you need to, to restore where you were as
+
+of at any point in time.
+
+A deploy with tolerant scalability, fault tolerant scalability, meaning that anything can go down
+
+and it will keep running.
+
+And that's a bit of the Landgraf platform thrown in there.
+
+So that's what Landgraf is all about.
+
+It's not related.
+
+It's not necessarily related to Lange chain.
+
+It is a framework for robustly running complex agent workflows, uh, giving you that kind of stability
+
+and monitoring, although I use the word monitoring there, and that was perhaps the wrong word to use
+
+it.
+
+It gives the ability to monitor, but it doesn't actually do the monitoring itself, because Lang Chain
+
+has a third product called Lang Smith, which is their kind of monitoring tooling.
+
+And Landgraf connects with Lang Smith.
+
+So you can use Lang Smith to monitor what's going on in your Lang graph graph.
+
+But Lang Smith is a separate offering.
+
+And Lang Smith can be used when working with lang chain or with Lang graph.
+
+And we will use Lang Smith.
+
+We will use that so that we can see things going on.
+
+And it gives you, as it says here, visibility into your calls and your reasoning to quickly debug
+
+failures.
+
+So that is how the different products line up.
+
+It is a bit confusing because you can use Lang chain to build agent workflows.
+
+It has an abstraction layer over things like tool calling, but Lang Graph is the core offering.
+
+That's the modern offering that's designed to meet the excitement of today's agent AI.
+
+And the particular thing that they're focused on is the kind of scaling in a resilient, robust, repeatable
+
+way.

@@ -1,0 +1,231 @@
+Refer : D:\MyProjects\agents\4_langgraph\2_lab2.ipynb
+
+And our last trick for today.
+
+I'm going to switch it to store it in SQL instead.
+
+Our memory is going to be in a SQL database.
+
+And again this is impressive stuff.
+
+It's great that it's so simple and easy to switch to using SQL.
+
+We just import uh, this SQL Lite saver instead.
+
+And uh we're going to write to a memory DB.
+
+We connect that way.
+
+Uh, we come in and it's just exactly the same code.
+
+But we're of course putting in the SQL memory instead of the memory before.
+
+I mean, it's just different name of a variable, but it's the exactly the same approach, uh, as we
+
+had before.
+
+Nothing different there at all.
+
+There we go.
+
+I'm going to make the thread ID a different ID because since it's SQL, it's kind of remember from my,
+
+my, my tests.
+
+Uh, but uh, then we can come in and we can say hi there and see.
+
+How can I assist you today?
+
+Uh, what's my name?
+
+And I don't have access.
+
+Uh, my name is Ed.
+
+Nice to meet you, Ed.
+
+How can I assist you today?
+
+All right, so with that, uh, we can now go back here, and this time, we can just recreate the whole
+
+thing from scratch.
+
+It's like I could.
+
+I could restart my kernel.
+
+I should restart my kernel.
+
+Why don't I do that?
+
+You'll have to bear with me.
+
+We will clear.
+
+We will restart kernel, clear all outputs.
+
+We'll go all the way back up to the top, run our imports.
+
+We will load the dot env.
+
+Just check.
+
+I guess I should load in the tools again because we're going to use these do this, do this.
+
+Get the pushover message me.
+
+My phone's on silent.
+
+Bring them together.
+
+Get our state object because we reuse that at various points.
+
+And now from this point onwards, I think now we can now go back here.
+
+So we're completely fresh.
+
+Uh, so now we're going to recreate this.
+
+We are going to rebuild our graph builder.
+
+There it is.
+
+And here we go.
+
+And hi there.
+
+Hello again editor.
+
+Ha there you have it.
+
+Restart the kernel.
+
+Uh, completely bring everything fresh.
+
+And of course, it knows who I am.
+
+And it knows that because you can see right here in this directory, there's a bunch of database objects.
+
+It's storing it in a SQLite database.
+
+And so we have persistent memory with changing like one word uh from, from my code.
+
+And I think that is really impressive.
+
+And I realized just before we, we closed this, I should also show that the tools are working and in
+
+action.
+
+So after saying this, I should let's do the same thing.
+
+Um.
+
+Please send me a push notification with the current USD GBP exchange rates.
+
+Let's let it do its thing.
+
+Off it goes.
+
+And I just got a push notification and it says 0.78.
+
+Ha ha ha!
+
+There we go.
+
+So, uh.
+
+Success.
+
+Uh, I think, um, maybe, uh.
+
+Interesting.
+
+Uh, what what if I say I can?
+
+I'm trying to think about how we can use memory as well.
+
+Can you send that?
+
+Can you send that push notification again, please?
+
+Let's try that.
+
+There we go.
+
+I got another push notification with the same thing.
+
+So there, there.
+
+I had to think for a moment.
+
+There's a demonstration of both memory and tool calling in one shot with the right answer.
+
+Success.
+
+And you can see the various calls happening down there.
+
+So that then is a wrap on this.
+
+Um, and uh, it might be nice for us just to bring that up in Lang Smith just to see those calls.
+
+And so here we are in Lang Smith looking at that most recent request.
+
+And it's good to see that, as I was hoping to see it did use the tool to send the push notification.
+
+It didn't bother doing the search again because it had that in its memory.
+
+And you can see at the bottom here that it sends that push notification, and it then confirms back
+
+there that it did it as just as we saw in the chat.
+
+And you can see all of the history that it's got up above it.
+
+So you can see in Lang Smith that true to its word, everything is working.
+
+The memory is working, the tool call is working.
+
+Uh, and it knew that it already knew the exchange rate.
+
+Uh, so I'd say that that is a success.
+
+And to wrap up, let me show you one more time this great picture, which now I hope is lands nicely
+
+with you.
+
+We define our graph.
+
+We run each super step with each interaction, and these red lines are showing the checkpointing that's
+
+happening so that we can resume at any point.
+
+We can replay the state as it was.
+
+Then we can time travel back, and we can persist this in a database so that it maintains knowledge
+
+of the conversation.
+
+And it's keyed off this thread ID.
+
+And with that that concludes day three.
+
+And it was a meaty day.
+
+We covered a lot of ground.
+
+And I hope that you're building some of the same enthusiasms that I'm that I'm growing.
+
+As we get into this.
+
+For Landgraf, and seeing seeing the strengths, seeing how resilient, how robust it is, uh, and
+
+this, this discipline that it puts around the process.
+
+But that's enough of the, of the, of the learning and the concepts.
+
+Next time we launch into our project, our project called sidekick.
+
+And it's a really great one.
+
+I can't wait to show it to you.
+
+See you then.

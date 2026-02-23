@@ -1,0 +1,351 @@
+All right, so let's get stuck in.
+
+So before we get stuck in, let me set your expectations.
+
+There's going to be terminology.
+
+There's going to be some new concepts coming with Landgraf just as we've had in the past.
+
+And I realize that it's a bit jarring to say put all the crew stuff to one side, just just put that
+
+away.
+
+Compartmentalize.
+
+We're on to something new now, but it will be quick.
+
+We're going to get through the terminology quickly, and I'm going to be drilling it into you by repeating
+
+it several times, and then it's going to be second nature and you'll forget all about crew.
+
+All right.
+
+So what is the terminology.
+
+Here we go.
+
+So agent workflows are described in Landgraf speak as a graph.
+
+A graph is something that'll be very familiar to people in computer science.
+
+But a graph you can think of like a tree structure.
+
+It's something which has, uh, I'm about to say the names of the things I'm about to describe, but
+
+it has things connected together in, in something which looks a bit like a tree and some sort of a
+
+hierarchy where one thing depends on others beneath it.
+
+And so this, this idea of representing workflows in this kind of graph way, that is the the core idea
+
+of land graph as the name gives away.
+
+And then a state.
+
+So the state is something that represents the current snapshot, the current state of affairs, the
+
+status of your whole application.
+
+It's an object that that needs to encapsulate the state of the world.
+
+And that object is something which, which, uh, is is shared across the whole application.
+
+And it's something very fundamental to land graph.
+
+So you need to remember state.
+
+We're going to be using state a lot.
+
+And that's something which is it is uh it's a variable.
+
+It's like um it's, it's a, it's information.
+
+Um, it's not not a function.
+
+It's information.
+
+Nodes are functions.
+
+So a node which when people talk about graphs, they talk about nodes.
+
+They are the points on the graph.
+
+They are the, the, the things that are going to get connected together.
+
+The nodes are actually representing a function.
+
+Every node is a Python function.
+
+And that can be confusing the first time you hear it.
+
+Because when you think about graphs, you sometimes think of nodes as being things, as being data connected
+
+in some way.
+
+But no nodes in a graph are functions.
+
+They are Python functions, and they represent a piece of logic, a piece of ancient logic, a thing,
+
+an operation of some sort.
+
+They receive the current state as an input.
+
+They do something.
+
+They do something that might, might involve calling an LLM.
+
+It might involve some sort of a side effect.
+
+Changing something, writing something to a file, doing something that affects the world.
+
+And then they return an update, an updated state.
+
+That's that's what comes afterwards.
+
+So they take in a state, they do something and they return a new state.
+
+And I should say that the state you should think of as being like an immutable thing, the state object
+
+itself.
+
+You don't.
+
+You don't change it.
+
+You receive a state and then you return a new state, which is a difference from the state you had before.
+
+So far, you're with me.
+
+State and notes that the the two words.
+
+And then edges.
+
+And anyone that's ever looked at graphs will be familiar with the term edges.
+
+The edges, of course.
+
+The lines.
+
+The words I was trying not to say earlier is that graphs consist of nodes and edges.
+
+Edges are the connections between the nodes, and edges in the graph are also Python functions.
+
+They are Python functions that determine what node should be executed next based on the state, so the
+
+state can tell it what happens next.
+
+Now there are simple edge connections, which just means that is the next thing to happen.
+
+So if you have one node that is a function, the Python function that uh, that prints hello to to the
+
+output.
+
+And you have another node that prints goodbye.
+
+And they're connected.
+
+Then it will print hello, and then it will print goodbye.
+
+And that's it.
+
+But you can have, uh, connections which are conditional, which depend on something happening.
+
+And in that case, that would mean that one operation would happen and then subject to the condition,
+
+maybe the other one would happen, maybe not.
+
+So that is an edge.
+
+And then simply put, nodes are the things that do the work.
+
+They are the things that carry out tasks.
+
+They do stuff and edges are the things that determine, okay, that stuff was done, what's the next
+
+stuff that should be done?
+
+And that's all there is to it.
+
+That's the that's the main terminology.
+
+There are a couple of other things, but this is the core stuff.
+
+So if you've got this then you're most of the way there with Landgraf.
+
+And of course it would be nice to show this in some sort of a diagram.
+
+And this is the obvious diagram.
+
+So no surprise this is what it looks like.
+
+These are On nodes.
+
+Uh, the three orange circles there representing the three nodes, three operations happening in this
+
+graph, the edges.
+
+I'm trying to show there that one edge is not conditional.
+
+It just wants the top node is run, then the next one will run and it will have the state that's passed
+
+in will be the result of the, the the output from that first node.
+
+And the other edge is meant to show some sort of conditional edge that in some situations the node on
+
+the bottom right will run.
+
+So again, nodes do the work, edges choose what to do next.
+
+So that again is the terminology.
+
+So we are going to build our first graph.
+
+We're actually not going to do it today.
+
+Today is just a theory.
+
+Only one because I'm going to leave the practical for tomorrow.
+
+I'm going to let you brew over this.
+
+I'm going to let this sort of sink in so that the new terminology is something that's super clear to
+
+you.
+
+But the five steps to building your graph.
+
+Your first graph running it.
+
+And it's going to have some more terminology.
+
+First of all, you have to define your state class, the class which is going to store state.
+
+You don't you don't to create a state object because there'll be new objects created all the time.
+
+Uh, and, and so it will define the state class and you'll find out when we actually do this.
+
+There's something associated with that state class known as the reducer.
+
+And that's a very important concept.
+
+But I'm going to leave that concept to tomorrow.
+
+Secondly you start something called the graph builder.
+
+And the graph builder is a thing you're going to use to lay out all the nodes in your graph.
+
+This is something you're doing up front.
+
+Nothing's actually running.
+
+It's not like we actually have an agent system that's running.
+
+This is all.
+
+Before we run the agent system, we first start a graph builder.
+
+We then create a node that is one of these functions that's going to represent some operation that we're
+
+going to want to happen as part of this Landgraf and then we create some edges and we may repeat steps
+
+three and four.
+
+We may create lots of nodes and lots of edges to lay out the story.
+
+We're laying out the story of what we want our agent system to do, and this is all before it's actually
+
+live, before it's doing anything.
+
+It's not like we create nodes and edges and then things happen.
+
+No, we create nodes and edges as part of defining the graph, describing what this will do.
+
+Think of this as a bit like writing a program, but we're sort of doing it dynamically at runtime.
+
+So once we've done that, once at runtime, we've we've described the node, we've created the nodes,
+
+we've created the edges.
+
+We've laid out our whole agent workflow.
+
+We then run an operation called compiling the graph.
+
+And that will turn this into something that's ready to be executed.
+
+And then we kick it off and it runs.
+
+So it is important to get your head around this.
+
+What I've described there, this 12345.
+
+This is all stuff that that is running when we when we start our our system running, we do this process
+
+of defining the state class, starting the graph builder, creating nodes and edges, and compiling
+
+the graph.
+
+It's almost like part of running our system involves the sort of two phases, a phase when it's like
+
+defining itself, laying out the whole workflow, and then a second phase when that actually runs.
+
+And so that first phase, we're not really used to doing that when we code.
+
+We don't normally have a sort of meta phase when we're describing what it is that we want to do and
+
+then running it.
+
+But that's how it works with graph, and I hope that's made some sense.
+
+I'm going to explain it one more time when we go through this tomorrow.
+
+But this is the, uh, this is this is the overall approach that's used for building agentic workflows
+
+with graph.
+
+And with apologies for belaboring the point, let me say it one more time.
+
+When you run a graph application, when you kick it off, there's two phases.
+
+Two things happen.
+
+The first thing is that it runs some of your code that lays out the graph that defines what it is that
+
+you're trying to achieve with agents.
+
+And then once you've done that and that is these five steps here.
+
+Once you've done that, you then initiate it.
+
+You then run it, you invoke it.
+
+And then off this graph runs.
+
+And those two phases, both of them are part of running your application.
+
+And so what we're going to do next time is go through these five steps.
+
+Write code that will do all of this.
+
+And then call it.
+
+And you will then see the results all in one go.
+
+And if this if this is completely clear to you then sorry for saying it three times.
+
+Uh, hang on in there.
+
+And if this is not completely clicking for you, then then fear not when you see the actual code, I
+
+feel like it's going to come together and it's going to be easy peasy.
+
+And that indeed is what we're going to do tomorrow.
+
+So in day two we will do some actual code.
+
+We'll get to the lab.
+
+We'll build our first land graph agent I can't wait.
+
+I'll see you then.
+
+

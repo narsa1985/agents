@@ -1,0 +1,303 @@
+Refer : D:\MyProjects\agents\4_langgraph\3_lab3.ipynb
+
+So next we're going to actually put these tools to good use.
+
+So this thing here is a neat neat little bit of Python called a dictionary comprehension.
+
+You might be very familiar with it.
+
+If not check out the guides.
+
+We put together a dictionary by iterating through tools and creating something where the key is the
+
+name of the tool, and the value is the tool itself, and that allows us to pluck out the navigate tool
+
+and the extract text tool from this list of tools.
+
+And we're then going to call the navigate tool asynchronously navigate tool with the web address for
+
+CNN.
+
+And then we're going to call await to extract the text from it and call this.
+
+So this has got nothing to do with LMS.
+
+This is all about running Microsoft Playwright with the tools that come with Lang Chain.
+
+And we'll run that.
+
+Up comes a browser, it turns to CNN and stuff is happening and that just completed.
+
+And isn't that cool?
+
+It was like, I know it's got nothing to do with AI, but it's just great technology.
+
+Come back here and we print the text and there we go.
+
+We've got the text from CNN.
+
+Impressive stuff.
+
+So we can now package this together into one collection of tools.
+
+These tools that we just got from playwright, plus our push notification tool in it goes.
+
+And now it's time for us to make some agents.
+
+So the first thing we do is we do some, some pre-work to create our LLM, which is GPT four mini.
+
+Feel free to switch in your favorites.
+
+And then we bind it to tools.
+
+This you remember is what we do to deal with creating all of that JSON.
+
+For all of these tools.
+
+We've got a whole ton of tools now.
+
+JSON will be built for all of them.
+
+And now this is our chat bot function.
+
+This is something that is going to be one of our nodes.
+
+Because a node is just a function and it's something which will call it will invoke LLM with tools passing
+
+in the messages.
+
+And what comes out will be shoved into messages and returned.
+
+And that, of course, is our the new state, and the reducer will be used to combine it with the old
+
+state.
+
+So let's execute that.
+
+That's great.
+
+And now we have our graph.
+
+I think this is probably makes more sense to go here just to be nice and tidy.
+
+So we create our graph builder with the state that we've specified.
+
+We add the chatbot node.
+
+That's this function we just got here.
+
+We add in our tools.
+
+We then add in a conditional edge.
+
+This is going to be the if statement implemented behind the scenes.
+
+If the tools condition is true then tools will be called.
+
+We add an edge from tools to chatbot and then we add from the start to the chatbot.
+
+So I said agents.
+
+It's only one agent.
+
+That's it.
+
+We get some memory.
+
+We compile with that memory and we draw our image.
+
+There it is.
+
+It's a an image we're familiar with.
+
+It's the same as last time.
+
+The only difference is that these tools are a bit meatier than we had before.
+
+We now can control a browser window.
+
+Okay, so here we have at the end our final, our gradio, uh, flow.
+
+So we're going to create a Gradio interface.
+
+Um, we're going to use a function called chat as our callback.
+
+And here is chat.
+
+It's an async function.
+
+Gradio supports functions.
+
+It's callbacks being being async or being async.
+
+And it's um, we're going to to just simply call our graph that we've already built.
+
+We're going to call a invoke the asynchronous version we pass in our first state, which is the user
+
+input.
+
+This is a super step.
+
+So every input is like another run of the graph we pass in the config.
+
+So we have memory.
+
+We don't actually use the history because we're relying on checkpointing for that.
+
+But Gradio sends it to us anyway.
+
+And that is our gradio code.
+
+And with that let's run it.
+
+There it is.
+
+Okay.
+
+Let's say hi there.
+
+Okay.
+
+Let's say, uh, please send me a push notification.
+
+With a news headline news headline from CNN.
+
+See what happens there.
+
+There goes the browser.
+
+It's.
+
+I'm not touching it.
+
+Haha.
+
+Have you expecting that?
+
+We got a text.
+
+I could see the push and it says indeed this push notification about news going on.
+
+Very cool.
+
+All right, let's try another.
+
+Uh, please, uh, send me a push notification with the current usd GBP exchange rate.
+
+The browser is still running behind.
+
+Let me just bring that up there.
+
+It's gone to an exchange rates page and we got the push notification.
+
+There he is.
+
+Yep.
+
+And it is a different than yesterday.
+
+Down by a little bit 0.77 instead of 0.78.
+
+That's amazing.
+
+So there you go.
+
+There you have it.
+
+Uh, that is a really powerful tool in playwright.
+
+And isn't it amazing that we've now armed our agent to be able to drive a browser?
+
+And you can start to see when you think of the excitement people have around things like Manus and this
+
+idea of agents that can drive, you can now see how this could become an agent that can drive a browser
+
+and do work for you.
+
+And of course, that is what we're coming to for this week's big project.
+
+And I thought it'd be nice to just bring this up in Lang Smith for a second to show what it looks like.
+
+Uh, here we have it.
+
+Uh, you can see, if you look, that there was a fair amount of interactions that went on the process
+
+of going around the browser and and doing various things.
+
+It takes a little bit of interaction.
+
+It takes, of course, doing some navigation, navigating and reading.
+
+And if we look on the right, we can see what happened here.
+
+This is the human making that.
+
+So I said hi there.
+
+It said, hello.
+
+How can I assist you today.
+
+Please send me push notification and then you can see it uh it called to visit navigate browser to CNN.com.
+
+So I think yeah I just said CNN so it knew to look up that that web page um and then it knew to navigate
+
+it extracted hyperlinks.
+
+It looked at some hyperlinks, it did some stuff.
+
+And then it ended up sending a push notification.
+
+Uh, I noticed that I've got the tool returning just null, which is probably a bad thing.
+
+I should have it returning like some some fake JSON that says success or something so that it doesn't,
+
+uh, so, so that it just sort of lands better.
+
+It's more coherent with the, with the call of the tool.
+
+So I will make that change.
+
+Uh, and then, um, you can see that it then goes to exchange rates, it pulls that out, it gets the
+
+results, it extracts all of the text.
+
+And then once more it sends a push notification.
+
+So it's great to see this trace.
+
+And then you can see some other information about this too.
+
+I think I got to see over here.
+
+Yep.
+
+The total number of tokens that were exchanged with GPT four mini.
+
+And the fact that the total cost was, uh, $0.10 out of.
+
+Oh, no.
+
+That's from from all of the runs.
+
+I was going to say that would be expensive.
+
+Uh, and I've been doing a lot of runs, so, so so you should not have spent $0.10.
+
+Uh, that was, in fact, 0.8 of a cent for that whole conversation.
+
+Uh, and if you've been using a llama, then it wouldn't have cost you anything, but you might have
+
+had more coherence issues because we're expecting a lot.
+
+You probably needed to use a larger model.
+
+Um, but certainly worth experimenting with.
+
+But if you chose to splash out and use GPT four on many, it would have cost you all of 0.8 of a cent.
+
+Uh, so, uh, you can see that these things and obviously they can rack up over time if you use it
+
+extensively.
+
+But for any one given call, it is, uh, relatively low cost.

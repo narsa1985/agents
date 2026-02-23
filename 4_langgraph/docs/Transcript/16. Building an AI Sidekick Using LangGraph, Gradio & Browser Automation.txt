@@ -1,0 +1,321 @@
+Refer : D:\MyProjects\agents\4_langgraph\4_lab4.ipynb
+
+Okay, so first of all, we have a callback, a radio callback that radio will call into when we press
+
+a button, which will kick off a super step.
+
+So I've got this little thing here, which is a sort of cheeky thing that that comes up with a thread
+
+ID, a random big unique number to make sure that each time that we bring up the interface, it's not
+
+going to continue the conversation from last time or things can get quite hectic.
+
+So this this means that every radio session is going to have a separate thread.
+
+This also means that we could actually run this and have multiple different people that come on and
+
+use the interface and each have different conversations, which is really cool.
+
+So it's not just going to be for us this this sidekick.
+
+All right.
+
+So then the process message, uh, async, this coroutine, as I should call it, this, this function.
+
+Uh, so first of all, it creates a config based on the thread, uh, code that we're going to give
+
+it.
+
+Then it sets the initial state.
+
+So first of all the initial state.
+
+It's going to take the user's message, the message that comes in that's going to be the initial the
+
+initial message.
+
+It's going to take the success criteria as the, uh, the success criteria from, um, the the user
+
+that the user is going to tell us what what they see as being needed for success.
+
+And this state will go through all of the graph and it will be used by the evaluator, the feedback
+
+on work.
+
+Uh, this is what the evaluator can set.
+
+Success criteria met.
+
+This is false.
+
+To start with user input needed.
+
+This is false to start with.
+
+And then here it is.
+
+Here we do it.
+
+We take a graph we call a invoke.
+
+We pass in the state the initial state we pass in our config.
+
+And we wait for that to come back with what comes back.
+
+We then need to build the stuff that's going to appear in the Gradio user interface.
+
+We package up the user's message.
+
+We package up the the the last two things that will have come back.
+
+The second last one will be the assistance reply, and the very last one is going to actually be the
+
+evaluators evaluation.
+
+And we'll show them both coming so that they both appear in the UI, because it'll be nice to see the
+
+evaluation as well.
+
+But you could remove this if you don't want to see the evaluation in the UI.
+
+And then we package that together in the history with with all of this.
+
+And that's what we reply.
+
+There is a little bit of a confusion here if you're following all this, that we're sort of combining
+
+radio's history with the history that's being stored in Landgraf's memory, it would probably be be
+
+elegant, more more elegant here to actually unpack the full history from from the state.
+
+But that would start to get sort of messy.
+
+So I thought, keep it simple.
+
+It this this is fine.
+
+Um, and then I've also got a little callback called reset that just resets the interface.
+
+So we'll just run this that ran quickly.
+
+Check.
+
+I ran the other cells I did.
+
+And now we're going to launch our user interface.
+
+This is going to be a UI for our sidekick.
+
+Let's see what it looks like.
+
+Here we go.
+
+The sidekick.
+
+Personal coworker.
+
+It's got a nice, uh, nice shade of green I got for this UI.
+
+And, uh, we can ask a question and we can put the success criteria.
+
+So we will ask our sidekick the question.
+
+Uh, what is the current USD, GBP exchange rate?
+
+And the success criteria is going to be an accurate.
+
+Accurate answer.
+
+Simple as that.
+
+Let's see how it does.
+
+Here we go.
+
+Press the go button.
+
+Up comes a browser window.
+
+It's put in one as the amount.
+
+So it's driving this browser.
+
+It's looked for the, uh, for the dollar pound exchange rate.
+
+It appears to be on dollar euro.
+
+That's not a good sign.
+
+See what's happening back here?
+
+It's still processing.
+
+I wonder if it's going to work this out.
+
+Well, it seemed to do okay, but I don't see on the screen how it did that.
+
+Maybe that's down here.
+
+Or did it make a mistake?
+
+Let's see.
+
+Aha.
+
+No, it got it right.
+
+I see it scrolled down it for some reason it was defaulted to Euro, but it got the US dollar to GBP
+
+at 0.77463.
+
+And if we come back here let's see what it said.
+
+It did say 0.77463.
+
+So it did.
+
+It drove the user interface.
+
+It was a bit quirky there that it didn't pick the right currency, but it found the information.
+
+Uh, so the answer was the current USD to GBP exchange rate is approximately that number.
+
+The evaluator feedback from our other agent, the assistant, provided approximate exchange rate.
+
+However, the assistant should ideally note that it may change, so it gives some some stern feedback
+
+there, but it still chose to return control to you.
+
+Uh, so it's unclear.
+
+It thinks if it met our needs completely.
+
+Nonetheless, we saw it working.
+
+Uh, but now we need to see in Langsam whether the right messages were exchanged.
+
+Well, here we are in Lang Smith looking at what just happened.
+
+It's worth noting that it it cost us 19,000 tokens or 0.2 of a cent, a 2/10, a fifth of a cent.
+
+So if we look here, we'll see that a lot went on.
+
+Actually look at all of this stuff.
+
+So the worker uh, called a navigate browser tool, it called extract text.
+
+It called Get elements.
+
+Uh, so I guess yeah, this is, this is how it was doing its navigations and running.
+
+Uh, and then you can see down here that the this is where the these are all worker tasks.
+
+Worker tools.
+
+Worker.
+
+And then this is the evaluator getting called at the end, just as we would hope.
+
+And we can actually go all the way into chat OpenAI to see what message was sent to the evaluator.
+
+So here we go.
+
+So this is the results of that function that I belabored a bit earlier.
+
+System you're in evaluator determines if a task has been completed successfully assess the assistance
+
+last response based on the given criteria.
+
+Respond with your feedback, blah blah blah.
+
+Human you're evaluated.
+
+Conversation between user and assistant.
+
+You decide what action to take and then look at this.
+
+This is this is that that utility function that says user assistant, assistant assistant.
+
+And you can see that I made it.
+
+Just print tools use like this so that it's clear to the evaluator what's going on.
+
+The success criteria for the assignment is an accurate answer.
+
+So that's straight from the Gradio UI.
+
+And the final response that you're evaluating is that that is the same of course as this.
+
+And then this is the respond with your feedback blah blah blah blah blah.
+
+And we can see that what it responded with was JSON.
+
+Uh, of course.
+
+And it's JSON that conforms to the structured outputs schema that we provided.
+
+And that's why, uh, Langshan is able to read that in and populate that object.
+
+And that's what our graph then gets returned to it.
+
+and that is how the whole thing fits together.
+
+And there's the route based on evaluation taking us to the end.
+
+So it's kind of cool to see it here in locksmith and see the trace through the agent flow.
+
+And I can tell you obviously I've done some experiments with this with some of my prompts.
+
+Didn't didn't work so great early on.
+
+And there was times when there was like 25 different messages between the agent and the evaluator,
+
+particularly on some harder tasks.
+
+So it was quite interesting to see it bounce around and and a lot of fun.
+
+And obviously improving the prompts is one way to get there, but overall I see this as a really exciting
+
+project.
+
+You can really feel the beginnings of something very substantive here, and when you run this, you
+
+can experiment with giving it bigger tasks, asking it to summarize the various websites, to navigate
+
+around and to summarize back something to you.
+
+And there's lots that you can do here, which is terrific fun.
+
+And so that's going to put put this on pause for now, because when we come back tomorrow, we're going
+
+to try and make this into like a packaged project with a few more features.
+
+But let's go now to the wrap up.
+
+So I realized it was a long day today.
+
+We got through a lot, and I hope that you did have that same journey as me as seeing the visual there
+
+of that, uh, land graph graph and seeing the ability to build an evaluator and an agent that's able
+
+to talk like that and to go backwards and forwards, being able to give it playwright and be able to
+
+operate playwright like that.
+
+It's like we've built our own operator, the, the, uh, the agent from OpenAI, or that we built like
+
+a kind of agent.
+
+And it's been so easy to do it.
+
+And it's so cool to see the graph like this, to be able to interact with it in Langsamt.
+
+So as I say, I'm becoming I'm becoming a true believer.
+
+Uh, I'm becoming, uh, Landgraf advocate.
+
+It's exciting to see it come together.
+
+And tomorrow we'll try and take it one more step forwards.
+
+See you then.

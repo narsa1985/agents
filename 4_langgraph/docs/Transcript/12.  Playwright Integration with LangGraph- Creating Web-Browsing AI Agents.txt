@@ -1,0 +1,305 @@
+Refer : D:\MyProjects\agents\4_langgraph\3_lab3.ipynb
+
+So, look, I don't know if you're anything like me, but I'm having something of a change of heart.
+
+So I started this week quite clearly with OpenAI agents SDK as my favorite, and obviously with crew
+
+as my second favorite, and being a little bit skeptical of Landgraf because you sign up for a lot.
+
+But I'm coming around.
+
+I'm having a really great time.
+
+And what I've got to show you today, I feel like you're going to be there, right there with me.
+
+I'm actually becoming a serious fan of Landgraf.
+
+Uh, and there's some really cool stuff, so see what you think.
+
+Uh, I'm, uh, I'm suddenly feeling treacherous against OpenAI agents SDK.
+
+Uh, so, uh, welcome.
+
+Welcome to week four, day four, introducing a new project sidekick, and I can't wait to tell you
+
+about it.
+
+So what are we going to do today?
+
+How are we going to go deeper?
+
+You know, we always go a bit deeper with each of these.
+
+So first of all I'm going to introduce I'm going to unveil a new tool which is going to be incredibly
+
+powerful and which is going to allow us to do very different things.
+
+We're going to talk about structured outputs, something that we've I mean, it's been a recurring theme.
+
+We've done that in each of these.
+
+We'll use it here too.
+
+And we're also going to build a proper multi-agent workflow in Landgraaf so that you see it really coming
+
+together, the equivalent of the handoff in OpenAI agents SDK, or having a crew of agents.
+
+We will be doing that.
+
+And as a reminder, on the diagram I did last time, that brings it all together.
+
+Remember the terminology?
+
+A super step is a complete invocation of the graph, and each super step represents like one user input
+
+coming in and then flowing it through your graph of agents and tools.
+
+And then those blue diagrams are representing the graph that gets executed.
+
+The state is managed through that graph, and reducers are called to make sure that the state object,
+
+which is an immutable object, is maintained and managed through that.
+
+But between the super steps, you use checkpointing as your way of maintaining state.
+
+And checkpointing is very powerful, and it lets you do things like rewind the clock and put your state
+
+back to any prior point.
+
+So with that quick recap, let's go to the lab.
+
+All right.
+
+So we get started in week four and we're going to go to lab number three.
+
+Week four.
+
+Day four.
+
+Lab three.
+
+Uh, it's, as I say, the start of an awesome project.
+
+I am super happy with this.
+
+I hope you will be too.
+
+We do some imports.
+
+Takes a while.
+
+There's a lot of stuff to go.
+
+And then we've got this empty cell here.
+
+Why have we got empty cell?
+
+Because of course we have to do load.
+
+Dot override is true.
+
+This is second nature to you at this point.
+
+Okay.
+
+So I also I'm going to introduce this time asynchronous Landgraf using Landgraf in async mode, uh,
+
+which I promised was going to happen this week.
+
+And it's very similar to using long chain in sync mode.
+
+Uh, when we used to call tools to run a tool, you can now call await tool dot to run the tool asynchronously,
+
+but passing in the same inputs.
+
+Otherwise it's just the same.
+
+And to invoke the graph, if we would have said tool graph invoke state before, we can now say await
+
+graph a invoke state.
+
+So that is just simply a way to run a graph in asynchronous mode.
+
+And that is what we're going to be doing.
+
+Uh, for the state, I'm going to again be using a typed dict.
+
+So that means that it looks very much like when we use pydantic objects, you just have one field I'm
+
+going to have called messages.
+
+It is annotated.
+
+The type is a list.
+
+And this is telling Landgraf we want it to use ad messages, which is a canned function that you can
+
+import.
+
+We want that to be the reducer, which is going to keep on adding messages whenever we return that as
+
+our state from a node.
+
+And we will start a graph builder with that state.
+
+Okay.
+
+So far so good.
+
+Okay.
+
+Next up we are going to create a tool that we did last time.
+
+So we can do it nice and quickly.
+
+Here it is the push notification tool.
+
+We define our function push.
+
+And then we wrap it package it in a tool called tool push which describes what it is it calls the function.
+
+And that is all we need to do okay.
+
+Now now it gets exciting.
+
+Playwright.
+
+Do you know what playwright is?
+
+Playwright is one of these browser automation bits of software.
+
+It's considered the sort of the new the next generation of selenium, which many, many people have
+
+used.
+
+I've used selenium an awful lot.
+
+Playwright is by Microsoft and it's a, it's a it's a very nice framework for running a browser.
+
+And it's traditionally originally used for testing.
+
+So it's used for test purposes.
+
+And a lot of people also use it for web scraping, because if you just try and request a web page,
+
+you just get back like the server content, if you use something like Selenium or Playwright, you can
+
+actually render it in a browser, run the JavaScript, paint the page, and then use that to actually
+
+get the content.
+
+So playwright is a is a powerful tool for running a browser window, and it can do so what they call
+
+headless, which means you don't even see the browser windows, just like running behind the scenes
+
+or not headless headful in which case you see the browser screen yourself and you can interact with
+
+it.
+
+So that is playwright.
+
+You may already know it.
+
+A lot of people use playwright.
+
+This is how you install it.
+
+You type playwright install to do it on on Windows and Mac OS or on Linux.
+
+It's this longer command and it will then be installed.
+
+And if you have problems with that, then let me know.
+
+But hopefully not.
+
+Okay, one other thing to mention.
+
+One other little detail here.
+
+And this is just for running it in a notebook.
+
+Um, one of the problems, one of the challenges with async IO is that Asyncio runs an event loop.
+
+Um, and when you when it runs an event loop, it runs this thing that's just constantly making sure
+
+that it's running anything that's being awaited.
+
+And then when it's holding on IO, it runs something else that's being awaited.
+
+Uh, and one of the problems is that that async IO only supports one event loop.
+
+And if there's an event loop running, you can't within that event loop, run another event loop.
+
+And we're running an event loop as part of running, uh, this notebook right now.
+
+And so that can cause problems when you try and kick off async processes within async processes.
+
+Uh, and so there is this package called nest async IO that's quite popular, which you can just simply
+
+use this and then it like patches async IO so that you can have an event loop within an event loop.
+
+And as you will soon understand from me prattling away, we're going to want that because we're going
+
+to want to run playwright asynchronously, because we're going to build an agent that can drive playwright.
+
+And so we're going to need that concept of an event loop within an event loop.
+
+But when we later put this into Python code, we actually won't need this anymore.
+
+But we'll need it for now.
+
+All right.
+
+That's a long sidebar.
+
+That's over.
+
+But now comes the magic.
+
+So one of the incredible things about Landgraf and Long Chain, I'm becoming a convert of both, is
+
+that they come with so many great tools out of the box.
+
+Many of them are in the community package.
+
+There's actually a couple of different ways that you can run a playwright.
+
+There's two sets of tools.
+
+One of them is a more simplistic one that's just a bit higher level.
+
+This one that I've got here, uh, the Playwright Browser Toolkit.
+
+This is a lower level set of tools which provides a bunch of different tools.
+
+Let's just We're gonna create this.
+
+So this is this is, um, creating an asynchronous playwright browser, and then it's building a toolkit
+
+from that browser.
+
+And now we've, we've got the tools into a variable tools.
+
+So I'm just going to print these.
+
+And here are all of the tools that we get in this package.
+
+We get something that lets you uh, click on an element in a web page, navigate the browser to a particular
+
+web page, go to the previous web page like press the back button, extract text from a web page, extract
+
+hyperlinks, get elements, and then the current web page.
+
+Uh, so it gives you quite granular control over what's going on in this playwright browser.
+
+So again, to recap, playwright allows you to launch a browser window.
+
+And then this Landgraaf or Lang chain set of tools gives us a series of tools that will allow us to
+
+interact with that browser open windows, navigate, read the text, read the elements, do that kind
+
+of thing.
+
+That's pretty cool.
+
+And that is something we're going to be able to arm our agent to be able to use.

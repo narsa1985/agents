@@ -1,0 +1,399 @@
+Refer : D:\MyProjects\agents\4_langgraph\2_lab2.ipynb
+
+So now we're going to build the same graph that we did last time.
+
+But we're going to add in some tools.
+
+Uh, so um, one small change I'm going to make though is this time for the state object.
+
+We're not going to use a Pydantic object.
+
+We're going to use a typed dict.
+
+And it looks almost identical.
+
+It's just a it's a subclass of typed dict instead of pydantic base model.
+
+Um, but otherwise the same thing.
+
+Messages field.
+
+It's annotated.
+
+It's a list.
+
+And this is telling Landgraf that we're going to use the Add Messages reducer as a way of reducing.
+
+Otherwise it's just the same.
+
+So you can stick with Pydantic if you'd prefer, but this is a different way of doing it.
+
+Uh, so then we start the graph builder right there.
+
+And now we have something different.
+
+So it's worth keeping in mind, in your mind that when when we work with tools, there's actually two
+
+different places in our code that typically we have to worry about tools.
+
+And I've explained this up here first of all, when we're, when we're, uh, making the call to the
+
+model, to OpenAI.
+
+That's the point at which we have to look at our tools and create all of that JSON nonsense.
+
+All of the stuff to describe what the tool is, so that when we prompt the model, it knows what it
+
+can do.
+
+So that's one piece of work that has to happen.
+
+And then another piece of work is when the model then responds.
+
+We have to test to see whether is the finish reason tool calls.
+
+And if so then we have to do that stuff, which was the quite long winded handle tool call uh, method
+
+in the first week where we unpacked the tool call and then we did some clever stuff.
+
+You can either have just an if statement, or you can have something clever that goes and finds the
+
+function and calls it.
+
+But that whole piece of the puzzle, the, uh, receiving the message to call a tool from the model,
+
+is like another place where you have to do all of your coding.
+
+Those are the two points, and we'll see both those points separately in how we have to handle this
+
+with land graph.
+
+So this is the first one.
+
+When we create the model this is the chat OpenAI object which is the long chain wrapper around calling
+
+OpenAI.
+
+We also, once we've created it, we make another version of LLM, which is LLM with tools, which is
+
+after calling Bind tools to the LLM.
+
+And this is just some nice sort of magic, which is going to then figure out what are the tools that
+
+it can call and make sure that whenever we call that model, whenever we call this version of the model,
+
+it's going to to provide all of the tools it can do.
+
+So it's one of those examples.
+
+This is really powerful.
+
+It's lang chain here.
+
+And it's lang chain being really nice, making it simple to package away all of that JSON stuff and
+
+do it for us by abstracting around an LLM to have an LLM with tools which whenever you call it, it's
+
+going to automatically pass in all the tools it can call.
+
+The flip side of that is that it's it's sort of hiding from us some of the implementation and some of
+
+what's going on which which can be which can make it hard to debug and things.
+
+But but you certainly I mean hopefully you see the positives very much.
+
+It's really easy.
+
+That is done that now.
+
+Whenever we call liquid tools, it's going to automatically handle the the building of that JSON and
+
+the parsing it in.
+
+And so look look how simple this is.
+
+This is our chat bot function.
+
+This is our node our function for the chat bot which just as before we return messages.
+
+And then what we've got here is we just call invoke but not on the LM but on the LM with tools that
+
+knows already about those tools.
+
+It will build the JSON, it will parse the JSON in as the tools.
+
+So it's really clever.
+
+And then we add that node.
+
+And then there's this line here.
+
+This is part two.
+
+This is the other thing.
+
+This is handling the results back.
+
+So what's happening here is that we added that chatbot node.
+
+We're adding a second node called tools.
+
+And it is a special type of node.
+
+It's a tool node.
+
+And when you create a tool node you have to tell it okay.
+
+What are these tools.
+
+What is it that you do?
+
+And this tool node is basically like a canned node that when it's invoked, it's going to see whether
+
+any of the message is asking to call one of the tools that it's been assigned, that it was passed to
+
+it when it was created.
+
+That's the job of the tool node, and if so, it will run them.
+
+So one more time, this piece of code here is handling the request to the LM and packaging up the tools
+
+JSON.
+
+And this node here is handling what happens if a if there is a tool request, it's handling the unbundling
+
+of the request and the actual calling of the tool function.
+
+And if any of that didn't make sense, I think it hopefully will do very shortly.
+
+We're going to create the edges now and again a little bit more complicated than before.
+
+So there is an edge which is going from the chat bot to the tools from this node, which is the actual
+
+chat bot, the LM with tools to the thing that calls tools to the node that actually runs the different
+
+tools we need to connect those two.
+
+But that connection, it's a connection which which has like an if attached to it.
+
+We don't want to always call tools.
+
+We only want to call those tools if the model has returned a response that the finish reason is tool
+
+calls.
+
+We had to like code that ourselves in week one.
+
+If finish reason is tool calls so that if has to be included in here because it's only if that's true.
+
+It's only if the model returns that it wants to call tools that we actually want to to call this node.
+
+And so and so that is why when you look at this edge, it's not a normal edge.
+
+It's called a conditional edge, which means it's an edge that's only triggered in certain conditions.
+
+And like an if statement and you give it the node name, you give it the condition and you give it the
+
+the node that would then be called.
+
+And that condition called tools condition is again pre-canned with Landgraf.
+
+And of course it looks to see if the finish reason is handle tools.
+
+Uh, so, uh, sorry, the finish reason is tool calls.
+
+And so that is what.
+
+That's exactly what that does.
+
+So when I used to say that, that, uh, at the end of the day, tool calling is just an if statement.
+
+This is the if statement.
+
+This thing here is handling that if statement.
+
+And if the if statement is true then then it's calling a node called tools.
+
+Uh all right.
+
+And then the, the uh there's one more quite subtle point here, which is that you also have to make
+
+an edge between tools.
+
+Back to chatbot again, because the result of this, the result of running the tool, the output needs
+
+to get fed back into the chatbot and it needs to continue processing from there.
+
+So this is subtle and, and, uh, you know, once, once I've said it, it's probably obvious, but
+
+it's one of those things that if I hadn't said it, it's not something that would naturally have occurred
+
+to you.
+
+And if you don't do it, then things will go wrong in strange ways.
+
+So it's one of those times.
+
+Again, it's elegant, it's neat.
+
+It's great that Landgraf does that, but it can make it a bit harder to debug.
+
+All right.
+
+And then we're going to add that start edge.
+
+And then we're going to.
+
+Compile and picture it.
+
+And this will hopefully bring this together for you.
+
+Start goes to chat bot.
+
+This is a conditional line.
+
+If if the finish reason is is a tool call then it will come here because the tools condition will be
+
+true.
+
+Then it will it will be responsible.
+
+This node is a canned node that's responsible for calling the tools that are relevant.
+
+And then the results comes back.
+
+And this is a solid line because if it's got here it should always come back.
+
+And this is a dotted line because only in the event that this didn't happen then it will come to end
+
+naturally.
+
+Landgraf automatically adds an end node for any any unresolved condition like that.
+
+And so that is our graph.
+
+And I hope that seeing that graph has made it come together for you.
+
+So the two places where tools are incorporated.
+
+One is the chatbot itself.
+
+We're using the LM with tools and the other is in the conditional branch and this tools node itself.
+
+Well, I think it's enough chit chat.
+
+We should get on and run this thing.
+
+So here we go.
+
+We're going to.
+
+Oh, I think I'll make this consistent with how we've done it before.
+
+We'll call this chat not invoke graph.
+
+But it is.
+
+It is how we should think of it really.
+
+So we're going to um, we're going to, to bring up a gradient screen and we're just going to call it
+
+let's see if this works.
+
+Okay.
+
+So I'm going to say hi there.
+
+Hello.
+
+How can I assist you today.
+
+Well I'm going to do something fun here.
+
+I'm going to say uh, please send me a push notification with the current US dollar to great British
+
+pound exchange rate.
+
+So I'm hoping that it's going to look up the exchange rate, uh, by doing a web search, find it out,
+
+and then send me a push notification.
+
+This is ambitious.
+
+2 to 2 tool calls in one shot.
+
+Get that out of me and we'll see.
+
+Uh, we'll see how it does.
+
+So it's going.
+
+It's off, it's pausing.
+
+It's as you heard it certainly sent me something.
+
+The current USD GBP exchange rate is 0.78.
+
+Well, I happen to have a Google screen sitting over here.
+
+Let's bring this into view.
+
+There you will find the current US dollar GBP exchange rate is indeed 0.78.
+
+So that's cool.
+
+That's cool.
+
+I hope you agree.
+
+Sorry.
+
+Get that out of your way.
+
+I hope you agree.
+
+Uh, it's interesting to see that this has happened and that it's achieved this.
+
+And what we can see here is that we can come into Lange Smith and see the outcome of this.
+
+I'm interested that it's put that in red the four seconds that it took us.
+
+So let's go into this and see more.
+
+Please send me a push notification with the current USD GBP exchange rate.
+
+So we can see that that you can see the whole graph playing out here.
+
+And it's fascinating to see, uh, the, the, um, let's scroll down.
+
+It's doing a search right here.
+
+Click here current USD to GBP exchange rate.
+
+And that's the the result that came back.
+
+Um, this was from, from from doing the search just as we expected.
+
+And then it came back to a tools condition to a send push notification.
+
+Uh, and uh, back came the uh, the, the answer.
+
+And then that was the, uh, the conclusion.
+
+Um, there we go.
+
+And that's how it responded.
+
+So there we see the full, uh, the full chain of, of, uh, discussion happening within Lange Smith
+
+and how you can come in and debug this and see what's going on and see, indeed convince yourself that
+
+it did call the couple of tools.
+
+And this was great fun, and I hope you'll do the same thing.
+
+Come in now and run this and let it cool.
+
+Both tools go into Lange Smith and Trace through to make sure that you can also see all of these calls
+
+happening, uh, just just as we did right here.

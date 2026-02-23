@@ -1,0 +1,302 @@
+Refer :  D:\MyProjects\agents\4_langgraph\sidekick_tools.py
+D:\MyProjects\agents\4_langgraph\sidekick.py
+
+Okay, so I am going to start by taking us over to the tools which we're in right here.
+
+So the way that the tools module works is it's just a module that's going to load in all of the tools
+
+that we've worked with in the past.
+
+Um, it starts with a loading in the dot env.
+
+Um, because we'll need the API keys, we set up a few constants for pushover.
+
+We create the Google Sherpa API wrapper so that we can use that API.
+
+Um, and then we have uh, the playwright tools.
+
+This is the tools for navigating for driving the browser, taking exactly from the notebook that we
+
+were looking at before.
+
+Uh, we, we use the async code to start the playwright instance, and we launch Playwrights Chromium,
+
+and then we get the toolkit, and then we return the tools from the toolkit.
+
+We also return this browser and the playwright object itself.
+
+And we do that because we need to clean them up at the end of it when it's finished with resources.
+
+And this is something that I'm not sure I.
+
+It remains to be seen whether this is properly cleaning up resources.
+
+I'm checking to see if it does.
+
+Sometimes I see that the playwright the chromium browser, hangs around for longer than I was expecting,
+
+but I think it does.
+
+It does close it down properly.
+
+Uh, but uh, yeah, we'll see if it if it ever causes like a leak of browser windows being, being
+
+left open.
+
+All right.
+
+And then this you should recognize because this is the push notification that we've used many times.
+
+Uh, it's just a simple function that sends a push notification using requests using the push over URL.
+
+And then there's also one here that's new.
+
+This is get file tools.
+
+And this is using the file management toolkit which is from right here from Langshan community.
+
+And this is an example again of one of the things that is so amazing about the Lang chain ecosystem.
+
+It's so popular.
+
+So many people have used it that there are tons and tons of tools that you can tap into.
+
+Now in the in week six, we're going to get very excited about Mchp, which of course has taken the
+
+world by storm.
+
+And Mchp is so amazing because it's sort of unleashed the ability to connect together with different
+
+tools all over the place.
+
+But already people who are part of the long chain ecosystem have had the advantage of a lot of of tools
+
+that can form to lang chains tools format, which in itself is like a sort of a mini MCP, but but just
+
+for people in in Lang chain and so we can take advantage of this now we'll have more in week six, but
+
+for now we have access to all of the ones that come in the Lang Chain Toolkit, which includes this
+
+file management, one which will give tools for our LM to be able to to mess around in a directory that
+
+I'm setting sandbox.
+
+And it will be it will be forced to stay in that root directory.
+
+So that's good.
+
+And then so so I'm going to put together these different tools into this, this um, uh, this this
+
+collection of tools here.
+
+So we're going to take a push tool.
+
+We're going to define a tool around that, that push notification.
+
+So this is like a homegrown tool to do that.
+
+Um, there's file tools that we've just talked about.
+
+There's uh a tool to run the Serpa search.
+
+So this is again us manually creating a tool around the search.
+
+There's something called the Wikipedia tool.
+
+Uh, so we create a Wikipedia API wrapper.
+
+Uh, we create that.
+
+And that needed me to install a Wikipedia Python package in our environment, which I did.
+
+And then this tool is able to call and collect Wikipedia pages using Wikipedia's API, which is freely
+
+available to everybody.
+
+And so that gives our LLM expertise about stuff through Wikipedia.
+
+And then I also create here a Python tool.
+
+Maybe it'd be nicer just to show that separately.
+
+Python wrapper.
+
+So this means this is slightly nicer.
+
+This means that we are giving our, our, uh, LLM the ability to run Python code, much as if you just
+
+typed Python at the command line in one of these kinds of interfaces where it can put in some code and
+
+get back the answer.
+
+So we're giving it that power.
+
+And this this is something which isn't sandboxed.
+
+So it's unlike when we did this with crew when we ran Python code within a Docker container.
+
+So it was somewhat insulated from the world.
+
+This is not insulated.
+
+And so this should be used with caution.
+
+And if you're not comfortable with it then you should comment this out.
+
+Uh, and so just just by or just remove it from here, I mean remove it from these tools.
+
+If you're not happy with your LLM being able to run Python code on your computer.
+
+Uh, and, uh, but but for me, I'm, I'm especially as I'm using GPT four mini, I'm quite comfortable
+
+that it's going to be sensible.
+
+And besides, I'll monitor it and be be be careful with it.
+
+So as long as you're careful, as long as you show caution, it should be completely fine.
+
+Um, but do be aware of what we're doing there.
+
+And if you're not comfortable, if you have any doubts at all, then remove that tool from the list.
+
+You have been warned.
+
+And you can also, of course, just, uh, remove the the the, um, playwright tools.
+
+If you don't like it, just have it return something empty there instead.
+
+Uh, instead of returning those, uh, those tools.
+
+Okay, so that is our set of tools, all the tools that we want to arm our coworker, uh, sidekick
+
+with.
+
+And you can just add more tools to this other tools list.
+
+Anything you put in there will just automatically get used by our sidekick.
+
+You can just keep putting more and more and more things in there, and you can Google or ask ChatGPT
+
+about some of the tools that are in the long chain tools and the community folders like community utilities
+
+and experimental tools and tools.
+
+You can look at these or you can just look at them on chains.
+
+Documentation.
+
+There's a lot to choose from and you can just put them all in here.
+
+You can have a tool that can look at your Google Calendar and attach to to Google, so that it could
+
+schedule things for you.
+
+You can have all sorts of tools.
+
+There's so many.
+
+And that's the beauty of this project that you can just keep giving more and more capabilities to your
+
+LLM, that to your agent.
+
+That's the idea.
+
+All right.
+
+Next up we're going to go to the big class which is sidekick.
+
+So now I've gone to the sidekick module.
+
+Here it is.
+
+So the good news is this should all be familiar to you, because it's just the same code we had in the
+
+lab just moved into a Python module, which shows how, again, if I can do another of these, like
+
+a pitch for, for using, uh, these notebooks, you can iterate on something in a notebook, you can
+
+prototype, iterate, perfect your prompts, and then move to a module and people from an engineering
+
+background will say, well, that's not the way that we write software.
+
+We have things like TDD.
+
+We have we have a very different kind of process.
+
+The thing about this kind of work is that it is much more experimental by nature.
+
+The mindset of an AI engineer is more about crafting prompts, trying different ideas, seeing how they
+
+work.
+
+And so because by its very nature, it is a bit more trial and error.
+
+And and it means that it lends itself very well to a notebook interface initially until you've got things
+
+better down, and then you move to sort of productionizing something in Python code like this.
+
+So anyways, this is the the module we define the state, the typed dict that is our state.
+
+It has the messages field which is the annotated field that that is a list that will use this reducer.
+
+And messages we have success criteria, feedback success criteria met and user input needed.
+
+These these are the things that we get back from our assessment and talking about our assessment.
+
+Our evaluation here is the structured outputs schema.
+
+The the schema for the output that we get from our LM.
+
+And we want feedback whether or not the success criteria is met and whether or not user input is needed.
+
+That's what we want back.
+
+And these descriptions are what will be provided to the LM so that it populates the structured output.
+
+Well okay.
+
+And now we have a class called sidekick.
+
+And it's a it's quite a quite a big one.
+
+And maybe this could be could could warrant some refactoring.
+
+But it's basically everything we had in the notebook.
+
+Um, there's one fussy thing about working with async code, which is that the init method, when we
+
+create this, we don't want that to be to be async.
+
+Um, but we need to be able to do some initialization that will be async, like setting up our graph.
+
+And so we have to have like a separate async, uh I can say async method, but a coroutine uh, that,
+
+that is going to be handling that part of it.
+
+And we're going to need to make sure when we when we initialize a sidekick that we can first instantiate
+
+it and then call this setup asynchronously.
+
+Um, so first the first thing I do in this setup is I call that playwright tools function coroutine
+
+that we saw in the other, um, in the, in the sidekick tools.
+
+And then I populate my tools, my browser and playwright, and then I add into tools the other tools
+
+that we also put together in the other module.
+
+Okay.
+
+And then I create my worker LM, which is in this case GPT four mini.
+
+But feel free to switch it up and bind it to tools and store that as an instance variable.
+
+And then an evaluator.
+
+LM and I also store that as an instance variable.
+
+And then I call build graph.
+
+That's going to be the the the big part of that's what we've always said is the five steps that need
+
+to happen before you can actually run your graph and do your super steps.

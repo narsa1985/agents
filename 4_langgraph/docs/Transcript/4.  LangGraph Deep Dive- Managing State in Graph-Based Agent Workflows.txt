@@ -1,0 +1,181 @@
+And we're back.
+
+I left you with a day for the land grant ideas to marinate, and hopefully they have marinated well,
+
+and you're now ready to actually go and do something.
+
+But as always, I do like to repeat a couple of times because repetition helps with these things.
+
+So one more time in Landgraaf an agent workflow, a particular pattern for how you will run an agent
+
+system is represented as a graph.
+
+Like a tree structure, use state to represent the current snapshot of affairs, the state of the world
+
+at any one point, and you build nodes and edges which are Python functions, and a node decides how
+
+to go from one state to another, and edges or nodes do the work, they actually carry out something
+
+which has consequences and edges decide what to do next.
+
+Once a node has run.
+
+And you'll remember I talked about five steps, and I tried to make it clear that the thing that's a
+
+bit of a like a head twister is that these five steps that I'm talking about, they all happen when
+
+you run your code, and they happen before you can even run your agents.
+
+So when you run your code, there is this prething that has five steps in it, and then the agent running
+
+and that prething is what would be called graph building that that is laying out what you want to do,
+
+and then you kick it off to actually do it.
+
+And those five steps, of course, you define your state class describing the information that will
+
+be maintained.
+
+You start the graph builder.
+
+You then create a node or many.
+
+You create edges to hook it all up or many.
+
+And then you compile the graph and you're now ready for primetime.
+
+All right.
+
+So I want to get a little bit deeper about the state before we get to the code.
+
+The final thing before the code so state is what's known as immutable.
+
+It's a word that that people like to say a lot and hopefully know what it means.
+
+But you might not.
+
+So let me be very clear.
+
+What it means to be immutable is that you will never change the contents of this object.
+
+It is something which, once you've created it and assigned the values to it, it keeps those values.
+
+And you don't ever do what's called mutating it, which is changing it.
+
+And, and that's, that's important because, uh, state is something which is going to represent a
+
+snapshot of the system.
+
+You want to be able to always go back to that snapshot.
+
+It's something which which in itself, if the contents of that state changes, you wouldn't be able
+
+to maintain that snapshot.
+
+Uh, so just to get concrete on what that means, what that means is that if you when you write the
+
+function for a node, that function is going to be a function which quite simply receives a state as
+
+its input and it returns a state as its output.
+
+And the thing that it returns is different, a different object, a different instance of state than
+
+the one that came in.
+
+So in this example called my counting node, let's imagine that we have a state object.
+
+And the only thing that it has is a field called count.
+
+And count is something which is a number that counts.
+
+Uh, and the purpose of my counting node is to add one to count.
+
+So I realize this is quite artificial, but just to give you a clear sense of it.
+
+So this is a function, my counting node.
+
+It takes a state, old state.
+
+It it collects the count that is stored within old state.
+
+Old state dot count.
+
+It adds one to it and then it doesn't return like the old state object doesn't try and set count in
+
+old state.
+
+No, it creates a new state object and sets the new state's count to be this incremented count and it
+
+returns that new state object.
+
+And I realize I'm belaboring the point as I often do, but it's an important one, and you need to keep
+
+this in mind.
+
+And otherwise you'll get in all sorts of traps.
+
+So there's one more complication for each of the fields in your state.
+
+You can optionally specify a special function to be associated with that field.
+
+And you're specifying this to Landgraf.
+
+You're saying to Landgraf, hey, I want you to know that for this field in my state, it's a special
+
+field that has a reducer, this function called a reducer.
+
+Reducer is the technical name for this kind of function.
+
+And the job of the reducer function is that when you ever update, when you ever return a new state,
+
+I was going to say update the state, but that might be confusing.
+
+Whenever you return a new state, which is a new version based on an old state, you've done something.
+
+You've returned a new state.
+
+Landgraf can use this reducer function to decide how to combine each the specified field in your new
+
+state with the current state, you see that.
+
+So it can use this function called a reducer, so that if you have a field maybe it's count, maybe
+
+it's a different field.
+
+It would use that to combine it with the old state.
+
+Now, now that I've said that, you're probably thinking about that for a second and you're like, hang
+
+on, why, why, why would you need to do that?
+
+We've got a node like this.
+
+We've got the old state.
+
+We can do that ourselves.
+
+We can just simply update the field in whatever way we want.
+
+Why do we need to specify a reducer function separately?
+
+Well, here's why.
+
+Because this means that that graph can run multiple nodes at the same time.
+
+They can all be running and they're all returning state.
+
+And there's no risk that one node runs and it overwrites the progress that a different node made at
+
+the same time.
+
+If for any field that has a reducer like this, it will always be able to work, they'll be able to
+
+combine different states behind the scenes.
+
+And that's that's the kind of that's the clever trick that allows that to be so.
+
+So you'll see when if this is seeming a little bit abstract, it's going to be concrete.
+
+When we look at the code, we will indeed use a reducer.
+
+And it's going to be super clear why we need to do that and how it helps.

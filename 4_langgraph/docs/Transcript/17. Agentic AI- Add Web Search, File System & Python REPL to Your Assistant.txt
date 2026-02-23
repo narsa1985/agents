@@ -1,0 +1,198 @@
+Refer :  D:\MyProjects\agents\4_langgraph\sidekick_tools.py
+D:\MyProjects\agents\4_langgraph\sidekick.py
+
+Would you believe it's already day five of week four?
+
+Here we are completing our sidekick project.
+
+I'm so happy!
+
+I love this project and I'm now such a fan of Landgraf.
+
+Over the course of the week, uh, we're going to be talking today about tools, tools and more tools
+
+we're going to be building in, uh, the same tool that we know and love already about searching the
+
+web, not navigating a browser, but doing the web search, uh, using the Serp API that we've used
+
+before.
+
+We're going to send push notifications because why not?
+
+We know how to do that.
+
+We're also going to add a tool to use the file system to be able to write files, so that we can have
+
+our operator agent that we're building our, our coworker that we have with our sidekick be able to
+
+read and write files from the file system.
+
+We're going to have it have access to Wikipedia so that it can look things up.
+
+And we're even going to give it the ability to run Python code itself.
+
+Not not in a Docker container like we did before.
+
+This time it's just going to have the ability to execute some Python.
+
+And so we're really giving it unfettered access to do things on our machine while we watch and while
+
+we monitor.
+
+And that leads me to a big point.
+
+Uh, the sidekick app that we're about to build is an experimental app.
+
+It's something for you to work with and to monitor and watch and use it for your own purposes.
+
+This is this is an app for commercial purposes for you, for you to be able to get more and do more
+
+with an AI agent at your side.
+
+But in doing so, it doesn't have guardrails.
+
+It's something which is, uh, open to the wild.
+
+And as such, it needs to be treated with some caution.
+
+And that's the first thing I want to say.
+
+Use sidekick at your own risk.
+
+If you're not comfortable with this, if you're not sure about the technologies behind it and so on,
+
+then please do remove the Python Repl tool that we'll we'll add.
+
+You should remove it and even remove the online navigation tools until you're, you're comfortable with
+
+what's going on.
+
+And you can watch it.
+
+This is an agent that we are allowing to roam free.
+
+Now of course when it's using the browser it's using it's using chromium, the open source version of
+
+Chrome.
+
+And it doesn't have access to any of our cookies or any of our passwords in a password manager or something
+
+like that.
+
+So it's not able to do anything like log in or it doesn't have access to credit cards and so on.
+
+And the file manager is is within a certain directory, so it can't roam free on your computer.
+
+The Python wrapper is that's pretty open.
+
+It can run any Python it wants, which would allow it potentially to write something that could that
+
+could do uh, do some damage.
+
+Uh, so you could remove that if you're, if you're concerned.
+
+But it does seem extremely unlikely.
+
+But nonetheless you need to be comfortable with it.
+
+You need to do it at your own risk please.
+
+The the other thing I want to say is that the sidekick app is a starting point.
+
+See it as a canvas.
+
+I've built something up with some prompts and some tools, and I've discovered that I can make it do
+
+great things for me.
+
+It actually did some work for me, some real work, some commercial work that I needed to do, and it
+
+did it for me and produced a report and it was something that I used.
+
+So.
+
+So it works.
+
+It really works.
+
+And it can deliver commercial benefit for you and be your own sidekick, let alone building it for other
+
+people.
+
+Uh, so see it that way.
+
+But you need to see it as this canvas.
+
+It's something which you need to to make suitable for yourself.
+
+You need to put in the sorts of tools and give it the kind of prompting you need.
+
+When I use it, I find that it sometimes goes awry, and I need to improve my prompts and make various
+
+changes to it to keep it on track.
+
+And that's what you have to do.
+
+It will require experimentation, and if you do so, it will pay dividends.
+
+And that's my final point.
+
+There's so much opportunity with this.
+
+This really unleashes a gigantic eye.
+
+But this is like it's like you're building your own madness.
+
+If you find if you find agents like, like madness from the Chinese startup that that was able to do
+
+things like hunt for good, rent in apartments and build websites and things, this is like your very
+
+own one that you are building and you are controlling and so you can make it do great things.
+
+Um, but it requires effort put into it to and it will, it will take some investment of your time and
+
+experimentation.
+
+And so I see that see it that way, the good and the bad.
+
+It's a it's a canvas.
+
+It's not a completed product, but there's so much potential.
+
+Well let's get to it.
+
+Here we are in uh, in Cursa, we're looking at, week four, of course, and now we're going to Python
+
+modules, which I know will please some people, but I'm not going to be typing code, but it's going
+
+to be looking at it but going through it carefully.
+
+So sidekick, the application is divided into three Python modules.
+
+There are they are here.
+
+And I'll first give you like a drive by of them.
+
+There is sidekick tools.
+
+And this is the module where we define the different tools that we will use.
+
+So it's nicely packaged up in one place that is going to get us access to a ton of tools, or it's going
+
+to give our agent access to a ton of tools, then sidekick.
+
+Now this is a bit of a long, a long, uh, module here, and maybe this should be broken up a bit.
+
+Um, but it contains a class sidekick, and that has the code that includes our worker, our evaluator,
+
+and the building of the graph.
+
+And we'll come and look through this.
+
+And then thirdly, there is App.py, and that is our Gradio app that manages the user interface side
+
+of it.
+
+Okay.
+
+So with that, let's just spend a couple of minutes on each on each piece.
